@@ -1,7 +1,7 @@
 version: '2'
 services:
   nodered:
-    image: merlinschumacher/ctsmarthome:slim-v8
+    image: ctmagazin/ctnodered:slim-v8
     ports:
       - "1880:1880"
     volumes:
