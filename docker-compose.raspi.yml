@@ -1,7 +1,7 @@
 version: '2'
 services:
   nodered:
-    image: merlinschumacher/ctsmarthome:rpi-v8
+    image: ctmagazin/ctnodered:rpi-v8
   zigbee:
    image: koenkk/zigbee2mqtt:arm32v6
 
