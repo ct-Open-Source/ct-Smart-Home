@@ -1,2 +1,7 @@
 # ct-Smart-Home
-A dockerized Node-Red/MQTT setup with additional features
+
+to start
+
+```
+docker run -d --name ctsmarthome --privileged  --cap-add=SYS_ADMIN --cap-add=NET_ADMIN --restart=always --net=host ctsmarthome
+```

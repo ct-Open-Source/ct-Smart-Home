@@ -1,0 +1,32 @@
+version: '2'
+services:
+  nodered:
+    image: merlinschumacher/ctsmarthome:slim-v8
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./data/nodered:/data
+    depends_on:
+      - mqtt
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    restart: always
+    network_mode: "host"
+  mqtt:
+    image: "eclipse-mosquitto"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./data/mqtt/config:/mosquitto/config
+      - ./data/mqtt/data:/mosquitto/data
+      - ./data/mqtt/log:/mosquitto/log
+    restart: always
+  zigbee:
+    image: koenkk/zigbee2mqtt
+    volumes:
+      - ./data/zigbee:/app/data
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
