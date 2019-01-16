@@ -1,5 +1,4 @@
-
-# ct-Smart-Home
+# c't-Smart-Home
 Docker-environment for Node-Red with MQTT, Zigbee2MQTT, HomeKit and Bluetooth-LE-Support
 
 ## Containers
