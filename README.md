@@ -1,6 +1,9 @@
 # c't-Smart-Home
 Docker-environment for Node-Red with MQTT, Zigbee2MQTT, HomeKit and Bluetooth-LE-Support
 
+![](https://img.shields.io/docker/pulls/ctmagazin/ctnodered.svg)
+![](https://img.shields.io/docker/stars/ctmagazin/ctnodered.svg)
+
 ## Containers
 Uses mqtt, node-red and zigbee2mqtt
 
