@@ -16,6 +16,6 @@ Uses mqtt, node-red and zigbee2mqtt
 * If you do not want to start zigbee2mqtt, add the name of the nodered-container: `docker-compose -f docker-compose.yml -f docker-compose.raspi.yml up -d nodered`
 
 # Further information
-This project is described in the German computer magazine c't: [ct.de/smarthome](ct.de/smarthome)
+This project is described in the German computer magazine c't: [https:/ct.de/smarthome](https:/ct.de/smarthome)
 
 zigbee2mqtt is described here: [https://ct.de/ygdp](https://ct.de/ygdp)
