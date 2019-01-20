@@ -19,7 +19,9 @@ RUN set -ex \
 	&& sed -i "s/#enable-dbus=yes/enable-dbus=yes/g" /etc/avahi/avahi-daemon.conf \
 	&& sed -i "s/rlimit-nproc/#rlimit-nproc/g" /etc/avahi/avahi-daemon.conf \
 	&& setcap cap_net_raw+eip $(eval readlink -f `which node`) \
-	&& npm install node-red-contrib-homekit-bridged node-red-contrib-noble node-red-contrib-fritz node-red-contrib-tado-client node-red-dashboard \
 	&& mkdir /var/run/dbus
+USER node-red
+RUN npm install node-red-contrib-homekit-bridged node-red-contrib-noble node-red-contrib-fritz node-red-contrib-tado-client node-red-dashboard
+USER root
 COPY supervisord.conf /etc/supervisord.conf
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf" ]
