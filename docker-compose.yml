@@ -30,3 +30,4 @@ services:
       - ./data/zigbee:/app/data
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0"
+    restart: always
