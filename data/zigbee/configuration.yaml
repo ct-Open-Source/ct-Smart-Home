@@ -1,0 +1,7 @@
+homeassistant: false
+permit_join: true
+mqtt:
+  base_topic: zigbee2mqtt
+  server: 'mqtt://mqtt'
+serial:
+  port: /dev/ttyACM0
