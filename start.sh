@@ -104,6 +104,9 @@ case "$1" in
 	"update")
 		update
 	;;
+	"data")
+		build_data_structure
+	;;
 	* )
 		echo "c't-Smart-Home – setup script"
 		echo "============================="
@@ -111,5 +114,6 @@ case "$1" in
 		echo "setup.sh update – to update to this copy of the repo"
 		echo "setup.sh start – run all containers"
 		echo "setup.sh stop – stop all containers"
+		echo "setup.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups."
 	;;
 esac
