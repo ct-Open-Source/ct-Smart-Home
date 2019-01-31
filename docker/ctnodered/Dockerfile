@@ -1,4 +1,4 @@
-FROM node:lts-slim
+FROM node:8-slim
 
 # add support for gpio library
 RUN apt-get update
@@ -21,6 +21,7 @@ RUN useradd --home-dir /usr/src/node-red --no-create-home node-red \
 RUN set -ex \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends \
+	build-essential \
 	git \
 	openssh-client \
 	make \
@@ -35,9 +36,8 @@ RUN set -ex \
 	libnss-mdns \
 	libudev-dev \
 	supervisor \
-	&& rm -rf /var/cache/apt
-
-RUN     pip install RPi.GPIO \
+	&& rm -rf /var/cache/apt \
+	&& pip install RPi.GPIO \
 	&& apt-get install -y libcap2-bin \
 	&& sed -i "s/#enable-dbus=yes/enable-dbus=yes/g" /etc/avahi/avahi-daemon.conf \
 	&& sed -i "s/rlimit-nproc/#rlimit-nproc/g" /etc/avahi/avahi-daemon.conf \
@@ -51,7 +51,6 @@ USER node-red
 COPY package.json /usr/src/node-red/
 RUN npm install
 
-# User configuration directory volume
 EXPOSE 1880
 
 # Environment variable holding file path for flows configuration
@@ -60,6 +59,5 @@ ENV NODE_PATH=/usr/src/node-red/node_modules:/data/node_modules
 ENV NPM_CONFIG_PREFIX=/data
 ENV NPM_CONFIG_CACHE=/usr/src/node-red
 
-RUN npm install node-red-contrib-homekit-bridged node-red-contrib-noble node-red-contrib-fritz node-red-contrib-tado-client node-red-dashboard
 USER root
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf" ]
