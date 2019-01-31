@@ -1,0 +1,48 @@
+{
+    "name": "ctnodered",
+    "version": "1.0.0",
+    "description": "A visual tool for wiring the Internet of Things",
+    "homepage": "http://nodered.org",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/node-red/node-red-docker.git"
+    },
+    "main": "node_modules/node-red/red/red.js",
+    "scripts": {
+        "start": "node $NODE_OPTIONS node_modules/node-red/red.js -v $FLOWS"
+    },
+    "contributors": [
+        {
+            "name": "Dave Conway-Jones"
+        },
+        {
+            "name": "Nick O'Leary"
+        },
+        {
+            "name": "James Thomas"
+        },
+        {
+            "name": "Jan Mahn"
+        },
+        {
+            "name": "Merlin Schumacher"
+        }
+    ],
+    "dependencies": {
+        "node-red": "*",
+        "node-red-contrib-fritz": "*",
+        "node-red-contrib-homekit-bridged": "*",
+        "node-red-contrib-noble": "*",
+        "node-red-contrib-tado-client": "*",
+        "node-red-dashboard": "*",
+        "node-red-node-base64": "*",
+        "node-red-node-msgpack": "*",
+        "node-red-node-random": "*",
+        "node-red-node-suncalc": "*"
+    },
+    "engines": {
+        "node": "4.*.*"
+    }
+}
+
