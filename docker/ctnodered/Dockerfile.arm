@@ -51,8 +51,6 @@ USER root
 RUN set -ex \
 	&& apt-get remove -y python-dev python-wheel python-setuptools python-pip libudev-dev build-essential make g++ \
 	&& apt-get autoremove -y \
-	&& AUTO_ADDED_PACKAGES=`apt-mark showauto` \
-	&& apt-get remove --purge -y $BUILD_PACKAGES $AUTO_ADDED_PACKAGES \
 	&& rm -rf /var/cache/apt \
 	&& rm -rf /var/lib/apt/lists/* \
 	
