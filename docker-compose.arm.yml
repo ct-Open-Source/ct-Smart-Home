@@ -1,7 +1,7 @@
 version: '2'
 services:
   nodered:
-    image: ctmagazin/ctnodered:arm
+    image: ctmagazin/ctnodered:arm32v7
   zigbee:
    image: koenkk/zigbee2mqtt:arm32v6
 
