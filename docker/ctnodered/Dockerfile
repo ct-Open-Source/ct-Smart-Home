@@ -1,9 +1,9 @@
 FROM node:8-slim
 
 RUN set -ex \
-	mkdir -p /usr/src/node-red &&
-	mkdir /data &&
-	useradd --home-dir /usr/src/node-red --no-create-home node-red \
+	&& mkdir -p /usr/src/node-red \
+	&& mkdir /data \
+	&& useradd --home-dir /usr/src/node-red --no-create-home node-red \
 	&& chown -R node-red:node-red /data \
 	&& apt-get update \
 	&& chown -R node-red:node-red /usr/src/node-red \
