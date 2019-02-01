@@ -67,7 +67,7 @@ function start {
 	echo "CPU architecture is: "$architecture
 	echo "Using corresponding compose files"
 	if [ $architecture == "arm" ]; then
-		docker-compose -f docker-compose.yml -f docker-compose.raspi.yml up -d
+		docker-compose -f docker-compose.yml -f docker-compose.arm.yml up -d
 	elif [ $architecture == "amd64" ]; then
 		docker-compose up -d
 	else

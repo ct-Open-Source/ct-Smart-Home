@@ -1,7 +1,7 @@
 version: '2'
 services:
   nodered:
-    image: ctmagazin/ctnodered:slim-v8
+    image: ctmagazin/ctnodered:am64
     ports:
       - "1880:1880"
     volumes:
