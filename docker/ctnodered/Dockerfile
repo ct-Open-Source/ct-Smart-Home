@@ -45,6 +45,6 @@ RUN set -ex \
 	&& apt-get remove -y libudev-dev build-essential make g++ \
 	&& apt-get autoremove -y \
 	&& rm -rf /var/cache/apt \
-	&& rm -rf /var/lib/apt/lists/* \
+	&& rm -rf /var/lib/apt/lists/* 
 	
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf" ]
