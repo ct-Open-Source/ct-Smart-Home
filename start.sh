@@ -27,8 +27,8 @@ function build_data_structure {
 
 	chown 1883:1883 data/mqtt
 	chown -R 1883:1883 data/mqtt/*
-	chown 1000:1000 data/nodered
-	chown -Rf 1000:1000 data/nodered/*
+	chown 1001:1001 data/nodered
+	chown -Rf 1001:1001 data/nodered/*
 }
 
 function detect_arch {
