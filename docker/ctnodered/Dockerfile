@@ -24,6 +24,7 @@ RUN set -ex \
 	&& sed -i "s/rlimit-nproc/#rlimit-nproc/g" /etc/avahi/avahi-daemon.conf \
 	&& setcap cap_net_raw+eip $(eval readlink -f `which node`) \
 	&& npm install \
+	&& npm dedupe \
 	&& npm cache clean --force \
 	&& chown -R node-red:node-red /usr/src/node-red \
 	&& chown -R node-red:node-red /data \
