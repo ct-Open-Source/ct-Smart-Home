@@ -1,4 +1,4 @@
-COPY qemu-arm-static /usr/bin
+FROM node:8-slim
 COPY supervisord.conf /etc/supervisord.conf
 COPY package.json /usr/src/node-red/
 
