@@ -65,10 +65,10 @@ function build_data_structure {
 		create_zigbee2mqtt_config
 	fi
 
-	chown 1883:1883 data/mqtt
-	chown -R 1883:1883 data/mqtt/*
-	chown 1001:1001 data/nodered
-	chown -Rf 1001:1001 data/nodered/*
+	sudo chown 1883:1883 data/mqtt
+	sudo chown -R 1883:1883 data/mqtt/*
+	sudo chown 1001:1001 data/nodered
+	sudo chown -Rf 1001:1001 data/nodered/*
 }
 
 function detect_arch {
@@ -81,6 +81,7 @@ function detect_arch {
 		echo "unknown"
 	fi
 }
+
 
 function check_dependencies {
 	if ! [ -x "$(command -v docker-compose)" ]; then
