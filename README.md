@@ -31,6 +31,6 @@ setup.sh data – set up the data folder needed for the containers, but run none
 ```
 
 # Further information
-This project is described in the German computer magazine c't: [https://ct.de/smarthome](https:/ct.de/smarthome)
+This project is described in the German computer magazine c't: [https://ct.de/smarthome](https://ct.de/smarthome)
 
 zigbee2mqtt is described here: [https://ct.de/ygdp](https://ct.de/ygdp)
