@@ -1,7 +1,40 @@
 #!/bin/bash
 
+function detect_zigbee_device {
+	if usb_dev=$(lsusb -d 0451:); then
+		usb_dev_count=$(ls -1 /dev/ttyACM* 2>/dev/null | wc -l)
+		if [ "$usb_dev_count" -gt 1 ]; then
+			>&2 echo "There are multiple devices connected, that could be Zigbee USB adaptors. Please check data/zigbee/configuration.yml, if the device is wrong. /dev/ttyACM0 is used as the default."
+
+			echo "/dev/ttyACM0"
+		fi
+
+		if [ -c /dev/ttyACM0 ]; then
+			echo "/dev/ttyACM0"
+		else
+			>&2 echo "I could not find /dev/ttyACM0. Please check your hardware."
+		fi
+	else
+		>&2 echo No Texas Instruments USB device found.
+
+		echo "False"
+	fi
+}
+
 function create_zigbee2mqtt_config {
-	echo "Zigbee2Mqtt configuration is missing. creating it"
+	key=$(dd if=/dev/urandom bs=1 count=16 2>/dev/null | od -A n -t x1 | awk '{printf "["} {for(i = 1; i< NF; i++) {printf "0x%s, ", $i}} {printf "0x%s]\n", $NF}')
+	echo "Zigbee2Mqtt configuration is missing. creating it."
+	echo
+	echo
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "This is your random Zigbee encryption key:" 
+	echo
+	echo $key
+	echo
+	echo "Store it safely or you will have to repair all of your devices."
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo
+	echo
 	cat > data/zigbee/configuration.yaml <<EOF
 homeassistant: false
 permit_join: true
@@ -9,8 +42,15 @@ mqtt:
   base_topic: zigbee2mqtt
   server: 'mqtt://mqtt'
 serial:
-  port: /dev/ttyACM0
+  port: $device 
+  disable_led: false
+advanced:
+  channel: 25
+  network_key: $key
 EOF
+
+echo "Disable permit_join in data/zigbee/configuration.yaml after you have paired all of your devices!"
+
 }
 
 function build_data_structure {
@@ -21,7 +61,7 @@ function build_data_structure {
 
 	touch data/mqtt/config/mosquitto.conf
 
-	if [ ! -f data/zigbee/configuration.yaml ]; then
+	if [ ! -c data/zigbee/configuration.yaml ]; then
 		create_zigbee2mqtt_config
 	fi
 
@@ -33,7 +73,7 @@ function build_data_structure {
 
 function detect_arch {
 	uname_arch=$(uname -m)
-	if [[ $uname_arch == *"amd64"* ]]; then
+	if [[ $uname_arch == *"x86_64"* ]]; then
 		echo "amd64"
 	elif [[ $uname_arch == *"arm"* ]]; then
 		echo "arm"
@@ -47,7 +87,7 @@ function check_dependencies {
 		echo 'Error: docker-compose is not installed.' >&2
 		exit 1
 	fi
-	
+
 	if ! [ -x "$(command -v git)" ]; then
 		echo 'Error: git is not installed.' >&2
 		exit 1
@@ -57,22 +97,28 @@ function check_dependencies {
 
 function start {
 
+	device=$(detect_zigbee_device)
+	if [ $device == "False" ]; then
+		echo "No Zigbee adaptor found. Not starting Zigbee2MQTT."
+		container="nodered"
+	fi
+
 	if [ ! -f data ]; then
 		build_data_structure    
 	fi
-
-	echo "Starting all containers"
-	architecture=$(detect_arch)
-
+	echo $container
+	echo	
+	echo "Starting the containers"
+	architecture=$(detect_arch)	
 	echo "CPU architecture is: "$architecture
 	echo "Using corresponding compose files"
 	if [ $architecture == "arm" ]; then
-		docker-compose -f docker-compose.yml -f docker-compose.arm.yml up -d
+		docker-compose -f docker-compose.yml -f docker-compose.arm.yml up -d $container
 	elif [ $architecture == "amd64" ]; then
-		docker-compose up -d
+		docker-compose up -d $container
 	else
-	       echo 'Error: Only amd64 and arm are supported'
-	       exit 1
+		echo 'Error: Only amd64 and arm are supported'
+		exit 1
 	fi
 }
 
@@ -86,8 +132,10 @@ function update {
 	docker-compose down
 	echo "Pulling current version via git."
 	git pull
+	echo "Pulling current images."
+	docker-compose pull
 	if [ ! $? -eq 0 ]; then
-	    echo "Updating failed. Please check the repository on GitHub."
+		echo "Updating failed. Please check the repository on GitHub."
 	fi	    
 	start
 }
@@ -97,16 +145,16 @@ check_dependencies
 case "$1" in
 	"start")
 		start
-	;;
+		;;
 	"stop")
 		stop
-	;;
+		;;
 	"update")
 		update
-	;;
+		;;
 	"data")
 		build_data_structure
-	;;
+		;;
 	* )
 		echo "c't-Smart-Home – setup script"
 		echo "============================="
@@ -115,5 +163,5 @@ case "$1" in
 		echo "setup.sh start – run all containers"
 		echo "setup.sh stop – stop all containers"
 		echo "setup.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups."
-	;;
+		;;
 esac
