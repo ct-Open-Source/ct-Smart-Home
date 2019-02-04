@@ -36,17 +36,32 @@ function create_zigbee2mqtt_config {
 	echo
 	echo
 	cat > data/zigbee/configuration.yaml <<EOF
+# Home Assistant integration (MQTT discovery)
 homeassistant: false
+
+# allow new devices to join
 permit_join: true
+
+# MQTT settings
 mqtt:
+  # MQTT base topic for zigbee2mqtt MQTT messages
   base_topic: zigbee2mqtt
+  # MQTT server URL
   server: 'mqtt://mqtt'
+  # MQTT server authentication, uncomment if required:
+  # user: my_user
+  # password: my_password
+
+# Serial settings
 serial:
-  port: $device 
+  # Location of CC2531 USB sniffer
+  port: /dev/ttyACM0
   disable_led: false
+
 advanced:
   channel: 25
   network_key: $key
+
 EOF
 
 echo "Disable permit_join in data/zigbee/configuration.yaml after you have paired all of your devices!"
