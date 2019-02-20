@@ -24,10 +24,10 @@ Uses mqtt, node-red and zigbee2mqtt
 c't-Smart-Home – setup script                                                                                                                             
 =============================
 Usage:
-setup.sh update – to update to this copy of the repo
-setup.sh start – run all containers
-setup.sh stop – stop all containers
-setup.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.   
+start.sh update – to update to this copy of the repo
+start.sh start – run all containers
+start.sh stop – stop all containers
+start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.   
 ```
 
 # Further information
