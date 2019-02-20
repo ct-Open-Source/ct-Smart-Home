@@ -17,7 +17,7 @@ Uses mqtt, node-red and zigbee2mqtt
 * run `./start.sh data` to create the necessary folders
 * On a AMD64-System use `docker-compose -f up -d`
 * On a Raspberry Pi/ARM-based systems use `docker-compose -f docker-compose.yml -f docker-compose.raspi.yml up -d`
-* If you do not want to start zigbee2mqtt, add the name of the nodered-container: `docker-compose -f docker-compose.yml -f docker-compose.raspi.yml up -d nodered`
+* If you do not want to start zigbee2mqtt, add the name of the nodered-container: `docker-compose -f docker-compose.yml -f docker-compose.arm.yml up -d nodered`
 
 ## start.sh options
 ```
