@@ -76,7 +76,7 @@ function build_data_structure {
 
 	touch data/mqtt/config/mosquitto.conf
 
-	if [ ! -c data/zigbee/configuration.yaml ]; then
+	if [ ! -f data/zigbee/configuration.yaml ]; then
 		create_zigbee2mqtt_config
 	fi
 
@@ -119,7 +119,7 @@ function start {
 		container="nodered"
 	fi
 
-	if [ ! -f data ]; then
+	if [ ! -d data ]; then
 		build_data_structure    
 	fi
 	echo $container
