@@ -30,7 +30,7 @@
         }
     ],
     "dependencies": {
-        "node-red": "*",
+        "node-red": "latest",
         "node-red-contrib-fritz": "*",
         "node-red-contrib-homekit-bridged": "*",
         "node-red-contrib-noble": "*",
