@@ -119,11 +119,6 @@ function start {
 		container="nodered mqtt"
 	fi
 
-	if [ -z "$container" ]; then
-		echo "Only starting the containers:" $container
-		echo    
-	fi
-
 	if [ ! -d data ]; then
 		build_data_structure    
 	fi
