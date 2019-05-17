@@ -127,15 +127,11 @@ function start {
 	echo "Starting the containers"
 	architecture=$(detect_arch)	
 	echo "CPU architecture is: "$architecture
-	echo "Using corresponding compose files"
-	if [ $architecture == "arm" ]; then
-		docker-compose -f docker-compose.yml -f docker-compose.arm.yml up -d $container
-	elif [ $architecture == "amd64" ]; then
-		docker-compose up -d $container
-	else
+	if [ $architecture == "unknown" ]; then
 		echo 'Error: Only amd64 and arm are supported'
 		exit 1
 	fi
+	docker-compose up -d $container
 }
 
 function stop {
