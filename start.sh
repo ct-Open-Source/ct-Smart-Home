@@ -116,19 +116,23 @@ function start {
 	device=$(detect_zigbee_device)
 	if [ $device == "False" ]; then
 		echo "No Zigbee adaptor found. Not starting Zigbee2MQTT."
-		container="nodered"
+		container="nodered mqtt"
+	fi
+
+	if [ -z "$container" ]; then
+		echo "Only starting the containers:" $container
+		echo    
 	fi
 
 	if [ ! -d data ]; then
 		build_data_structure    
 	fi
-	echo $container
-	echo	
+
 	echo "Starting the containers"
 	architecture=$(detect_arch)	
 	echo "CPU architecture is: "$architecture
 	if [ $architecture == "unknown" ]; then
-		echo 'Error: Only amd64 and arm are supported'
+		echo 'Error: Only amd64 and arm32v7 are supported'
 		exit 1
 	fi
 	docker-compose up -d $container
