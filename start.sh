@@ -146,8 +146,14 @@ function stop {
 function update {
 	echo "Shutting down all running containers and removing them."
 	docker-compose down
+	if [ ! $? -eq 0 ]; then
+		echo "Updating failed. Please check the repository on GitHub."
+	fi	    
 	echo "Pulling current version via git."
 	git pull
+	if [ ! $? -eq 0 ]; then
+		echo "Updating failed. Please check the repository on GitHub."
+	fi	    
 	echo "Pulling current images."
 	docker-compose pull
 	if [ ! $? -eq 0 ]; then

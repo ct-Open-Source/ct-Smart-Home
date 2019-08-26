@@ -14,7 +14,7 @@ To get this going you need a working [Docker 18.02.0+ setup](https://docs.docker
 
 You'll also need [docker-compose](https://docs.docker.com/compose/install/) on your machine.
 
-If you want to controll Zigbee devices you also will need a Zigbee-Stick. Have a look at [Zigbee2MQTT's documentation](https://www.zigbee2mqtt.io/getting_started/what_do_i_need.html) for that.
+If you want to control Zigbee devices you also will need a Zigbee-Stick. Have a look at [Zigbee2MQTT's documentation](https://www.zigbee2mqtt.io/getting_started/what_do_i_need.html) for that.
 
 ## Containers
 Uses [Eclipse Mosquitto](https://hub.docker.com/_/eclipse-mosquitto), a custom built Node-Red container and [zigbee2mqtt](https://github.com/Koenkk/zigbee2mqtt.io)
