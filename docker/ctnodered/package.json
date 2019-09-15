@@ -30,7 +30,7 @@
         }
     ],
     "dependencies": {
-        "node-red": "*",
+        "node-red": "^1.0.0-beta.3",
         "node-red-contrib-fritz": "*",
         "node-red-contrib-homekit-bridged": "*",
         "node-red-contrib-noble": "*",
@@ -42,7 +42,7 @@
         "node-red-node-suncalc": "*"
     },
     "engines": {
-        "node": "4.*.*"
+        "node": "12.*.*"
     }
 }
 

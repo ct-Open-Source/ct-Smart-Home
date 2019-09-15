@@ -1,4 +1,4 @@
-FROM arm32v7/node:10-alpine
+FROM arm32v7/node:12-alpine
 
 COPY qemu-arm-static /usr/bin
 COPY package.json /usr/src/node-red/
