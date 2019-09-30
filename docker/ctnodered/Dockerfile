@@ -1,45 +1,39 @@
-FROM node:12-alpine
+FROM nodered/node-red:1.0.0-10-minimal-amd64
 
-COPY package.json /usr/src/node-red/
 COPY entrypoint.sh /usr/src/node-red/entrypoint.sh
 
 WORKDIR /usr/src/node-red
 
-# Environment variable holding file path for flows configuration
-ENV FLOWS=flows.json \
-    NODE_PATH=/usr/src/node-red/node_modules:/data/node_modules \
-    NPM_CONFIG_PREFIX=/data \
-    NPM_CONFIG_CACHE=/usr/src/node-red 
+USER root
 
 RUN set -ex \
-	&& apk add --no-cache --virtual .run-deps \
-	  git \
-	  openssh-client \
-	  make \
-	  g++ \
-	  python \
+	&& apk add --no-cache \
 	  avahi-compat-libdns_sd \
-	  avahi-dev \
 	  dbus \
-	  su-exec \
 	  libcap \
-	&& rm -rf /var/cache/apk/* \
-	&& mkdir -p /usr/src/node-red /data /var/run/dbus /var/run/avahi-daemon \
-	&& addgroup -g 1001 -S node-red \
-	&& adduser -S -h /usr/src/node-red -u 1001 node-red -G node-red \
+	  python \
+	&& apk add --no-cache --virtual dev-packages \
+	  make \	  
+	  g++ \
+	  avahi-dev \
+	  eudev \
+	  eudev-dev \
+	  bluez-dev \
+	  build-base \
+	  linux-headers \
+	  udev \
 	&& setcap cap_net_raw+eip $(eval readlink -f `which node`) \
-	&& chown -Rv node-red:node-red /usr/src/node-red \
-	&& chown -R node-red:node-red /data \
 	&& chown messagebus:messagebus /var/run/dbus \
 	&& chown avahi:avahi /var/run/avahi-daemon \
-	&& su-exec root sed -i "s/#enable-dbus=yes/enable-dbus=yes/g" /etc/avahi/avahi-daemon.conf \
+	&& sed -i "s/#enable-dbus=yes/enable-dbus=yes/g" /etc/avahi/avahi-daemon.conf \
 	&& dbus-uuidgen --ensure \
-	&& chown root:node-red /sbin/su-exec \
-	&& chmod +s /sbin/su-exec \
-	&& chmod 755 /usr/src/node-red/entrypoint.sh \
-	&& su-exec node-red npm install --production \
-	&& su-exec node-red npm dedupe \
-	&& su-exec node-red npm cache clean --force
+	&& npm install node-red-contrib-fritz node-red-contrib-homekit-bridged node-red-contrib-tado-client node-red-dashboard node-red-node-base64 node-red-node-msgpack node-red-node-random node-red-node-suncalc @rdmtc/node-red-contrib-noble \
+	&& apk del dev-packages \
+	&& npm dedupe \
+	&& npm cache clean --force 
+RUN	sed -ie "s/'noble'/'@abandonware\/noble'/" node_modules/@rdmtc/node-red-contrib-noble/noble/node-red-contrib-noble.js
+
+VOLUME /data
 
 EXPOSE 1880
 
