@@ -1,4 +1,5 @@
 version: '3.6'
+
 services:
   nodered:
     image: ctmagazin/ctnodered:latest
@@ -6,6 +7,7 @@ services:
       - "1880:1880"
     volumes:
       - ./data/nodered:/data
+      - /etc/localtime:/etc/localtime
     depends_on:
       - mqtt
     privileged: true
@@ -16,6 +18,7 @@ services:
     network_mode: "host"
     environment:
       - TZ=Europe/Berlin
+    
   mqtt:
     image: "eclipse-mosquitto"
     ports:
@@ -24,6 +27,7 @@ services:
     volumes:
       - ./data/mqtt:/mosquitto
     restart: always
+    
   zigbee:
     image: koenkk/zigbee2mqtt
     volumes:
