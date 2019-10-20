@@ -125,12 +125,14 @@ function update {
 	if [ ! $? -eq 0 ]; then
 		echo "Updating failed. Please check the repository on GitHub."
 	fi	    
-	echo "Pulling current version via git."
-	git pull
+	echo "Pulling latest release via git."
+	git fetch --tags
+	latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
+	git checkout $latestTag
 	if [ ! $? -eq 0 ]; then
 		echo "Updating failed. Please check the repository on GitHub."
 	fi	    
-	echo "Pulling current images."
+	echo "Pulling docker images."
 	docker-compose pull
 	if [ ! $? -eq 0 ]; then
 		echo "Updating failed. Please check the repository on GitHub."
