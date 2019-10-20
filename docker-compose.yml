@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   nodered:
-    image: ctmagazin/ctnodered
+    image: ctmagazin/ctnodered:latest
     ports:
       - "1880:1880"
     volumes:

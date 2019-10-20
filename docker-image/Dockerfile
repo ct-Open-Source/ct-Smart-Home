@@ -1,4 +1,4 @@
-FROM nodered/node-red:1.0.0-10-minimal-amd64
+FROM nodered/node-red:latest-minimal
 
 COPY entrypoint.sh /usr/src/node-red/entrypoint.sh
 
@@ -27,7 +27,7 @@ RUN set -ex \
 	&& chown avahi:avahi /var/run/avahi-daemon \
 	&& sed -i "s/#enable-dbus=yes/enable-dbus=yes/g" /etc/avahi/avahi-daemon.conf \
 	&& dbus-uuidgen --ensure \
-	&& npm install node-red-contrib-fritz node-red-contrib-homekit-bridged node-red-contrib-tado-client node-red-dashboard node-red-node-base64 node-red-node-msgpack node-red-node-random node-red-node-suncalc @rdmtc/node-red-contrib-noble \
+	&& npm install node-red-contrib-fritz node-red-contrib-homekit-bridged node-red-contrib-tado-client node-red-dashboard node-red-node-base64 node-red-node-msgpack node-red-node-random node-red-node-suncalc @rdmtc/node-red-contrib-noble --unsafe-perm \
 	&& apk del dev-packages \
 	&& npm dedupe \
 	&& npm cache clean --force 
