@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   nodered:
-    image: ctmagazin/ctnodered
+    image: ctmagazin/ctnodered:latest
     ports:
       - "1880:1880"
     volumes:
@@ -14,15 +14,15 @@ services:
       - NET_ADMIN
     restart: always
     network_mode: "host"
+    environment:
+      - TZ=Europe/Berlin
   mqtt:
     image: "eclipse-mosquitto"
     ports:
       - "1883:1883"
       - "9001:9001"
     volumes:
-      - ./data/mqtt/config:/mosquitto/config
-      - ./data/mqtt/data:/mosquitto/data
-      - ./data/mqtt/log:/mosquitto/log
+      - ./data/mqtt:/mosquitto
     restart: always
   zigbee:
     image: koenkk/zigbee2mqtt

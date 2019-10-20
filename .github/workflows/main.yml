@@ -1,0 +1,39 @@
+name: Push
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [8, 10, 12]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Change Node-Version in Dockerfile to  ${{ matrix.node_version }}
+        run: sed -i -e "s/'latest-minimal'/'latest-{{$ matrix.node_version }}-minimal/" ./docker-image/Dockerfile
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1.0.2
+        with:
+          version: latest
+      - name: Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+      - name: Docker login
+        run: | 
+          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Run Buildx
+        run: |
+          if [ ${{ matrix.node_version }} -eq "10" ]; then
+              export DEVEL="-t merlinschumacher/ctnodered:devel"
+          fi
+          docker buildx build \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 \
+            -o type=registry \
+            -t merlinschumacher/ctnodered:"devel-${{ matrix.node_version }}" \
+            $DEVEL \
+            --file ./docker-image/Dockerfile ./docker-image

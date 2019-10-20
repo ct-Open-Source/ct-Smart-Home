@@ -86,18 +86,6 @@ function build_data_structure {
 	sudo chown -Rf 1001:1001 data/nodered/*
 }
 
-function detect_arch {
-	uname_arch=$(uname -m)
-	if [[ $uname_arch == *"x86_64"* ]]; then
-		echo "amd64"
-	elif [[ $uname_arch == *"arm"* ]]; then
-		echo "arm"
-	else
-		echo "unknown"
-	fi
-}
-
-
 function check_dependencies {
 	if ! [ -x "$(command -v docker-compose)" ]; then
 		echo 'Error: docker-compose is not installed.' >&2
@@ -109,7 +97,6 @@ function check_dependencies {
 		exit 1
 	fi
 }
-
 
 function start {
 
@@ -124,12 +111,6 @@ function start {
 	fi
 
 	echo "Starting the containers"
-	architecture=$(detect_arch)	
-	echo "CPU architecture is: "$architecture
-	if [ $architecture == "unknown" ]; then
-		echo 'Error: Only amd64 and arm32v7 are supported'
-		exit 1
-	fi
 	docker-compose up -d $container
 }
 
@@ -141,8 +122,14 @@ function stop {
 function update {
 	echo "Shutting down all running containers and removing them."
 	docker-compose down
+	if [ ! $? -eq 0 ]; then
+		echo "Updating failed. Please check the repository on GitHub."
+	fi	    
 	echo "Pulling current version via git."
 	git pull
+	if [ ! $? -eq 0 ]; then
+		echo "Updating failed. Please check the repository on GitHub."
+	fi	    
 	echo "Pulling current images."
 	docker-compose pull
 	if [ ! $? -eq 0 ]; then
@@ -170,7 +157,7 @@ case "$1" in
 		echo "c't-Smart-Home – setup script"
 		echo "============================="
 		echo "Usage:"
-		echo "setup.sh update – to update to this copy of the repo"
+		echo "setup.sh update – to update this copy of the repo"
 		echo "setup.sh start – run all containers"
 		echo "setup.sh stop – stop all containers"
 		echo "setup.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups."
