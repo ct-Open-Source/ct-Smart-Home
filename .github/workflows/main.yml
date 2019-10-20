@@ -29,11 +29,11 @@ jobs:
       - name: Run Buildx
         run: |
           if [ ${{ matrix.node_version }} -eq "10" ]; then
-              export DEVEL="-t merlinschumacher/ctnodered:devel"
+              export DEVEL="-t ctmagazin/ctnodered:devel"
           fi
           docker buildx build \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
             -o type=registry \
-            -t merlinschumacher/ctnodered:"devel-${{ matrix.node_version }}" \
+            -t ctmagazin/ctnodered:"devel-${{ matrix.node_version }}" \
             $DEVEL \
             --file ./docker-image/Dockerfile ./docker-image

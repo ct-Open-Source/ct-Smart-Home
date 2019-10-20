@@ -28,13 +28,13 @@ jobs:
       - name: Run Buildx
         run: |
           if [ ${{ matrix.node_version }} -eq "10" ]; then
-              export LATEST="-t merlinschumacher/ctnodered:latest"
+              export LATEST="-t ctmagazin/ctnodered:latest"
           fi
           docker buildx build \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
             -o type=registry \
-            -t merlinschumacher/ctnodered:${GITHUB_REF:10}-${{ matrix.node_version }} \
-            -t merlinschumacher/ctnodered:latest-${{ matrix.node_version }} \
+            -t ctmagazin/ctnodered:${GITHUB_REF:10}-${{ matrix.node_version }} \
+            -t ctmagazin/ctnodered:latest-${{ matrix.node_version }} \
             $LATEST \
             --file ./docker-image/Dockerfile ./docker-image
       
