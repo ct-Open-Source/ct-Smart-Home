@@ -157,9 +157,9 @@ case "$1" in
 		echo "c't-Smart-Home – setup script"
 		echo "============================="
 		echo "Usage:"
-		echo "setup.sh update – to update this copy of the repo"
-		echo "setup.sh start – run all containers"
-		echo "setup.sh stop – stop all containers"
-		echo "setup.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups."
+		echo "start.sh update – to update this copy of the repo"
+		echo "start.sh start – run all containers"
+		echo "start.sh stop – stop all containers"
+		echo "start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups."
 		;;
 esac
