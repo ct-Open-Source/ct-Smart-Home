@@ -10,7 +10,6 @@ It includes Node-RED, MQTT (provided by [Eclipse Mosquitto](https://mosquitto.or
 ![](https://img.shields.io/badge/GitHub-Actions-blueviolet)
 ![](https://img.shields.io/docker/pulls/ctmagazin/ctnodered.svg)
 ![](https://img.shields.io/docker/stars/ctmagazin/ctnodered.svg)
-![](https://img.shields.io/docker/cloud/automated/ctmagazin/ctnodered.svg)
 
 ## Requirements
 
