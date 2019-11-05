@@ -35,7 +35,7 @@ Usage:
 start.sh update – to update this copy of the repo
 start.sh start – run all containers
 start.sh stop – stop all containers
-start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.   
+start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.
 ```
 
 ### Manual start
