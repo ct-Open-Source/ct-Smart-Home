@@ -2,7 +2,7 @@ name: Push
 
 on:
   schedule:
-    - cron: '*/15 0 * * *'
+    - cron: '15 1 * * *'
   push:
     branches: 
       - master
