@@ -20,7 +20,7 @@ This setup will run on any  AMD64 or ARM32v7 machine. This includes virtually an
 If you want to control Zigbee devices you also will need a Zigbee controller stick. Have a look at [Zigbee2MQTT's documentation](https://www.zigbee2mqtt.io/getting_started/what_do_i_need.html) for that.
 
 ## Getting started
-* Install docker and docker-compose
+* Install docker and docker-compose: [german article on installation process](https://www.heise.de/ct/artikel/Docker-einrichten-unter-Linux-Windows-macOS-4309355.html?hg=1&hgi=3&hgf=false)
 * Clone/Download this repository
 * `cd` into the folder containing this repos files
 * run `./start.sh start` to setup the data folder needed for the containers and run them.
