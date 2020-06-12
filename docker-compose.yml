@@ -8,12 +8,10 @@ services:
     volumes:
       - ./data/nodered:/data
       - /etc/localtime:/etc/localtime
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
     depends_on:
       - mqtt
     privileged: true
-    cap_add:
-      - SYS_ADMIN
-      - NET_ADMIN
     restart: always
     network_mode: "host"
     environment:

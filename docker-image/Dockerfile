@@ -8,17 +8,18 @@ USER root
 
 RUN set -ex \
 	&& apk add --no-cache \
+	  su-exec \
+	  avahi \
 	  avahi-compat-libdns_sd \
 	  dbus \
 	  libcap \
 	  python \
+	  bluez \
 	&& apk add --no-cache --virtual dev-packages \
 	  make \	  
 	  g++ \
 	  avahi-dev \
-	  eudev \
-	  eudev-dev \
-	  bluez-dev \
+	  bluez \
 	  build-base \
 	  linux-headers \
 	  udev \
@@ -27,11 +28,10 @@ RUN set -ex \
 	&& chown avahi:avahi /var/run/avahi-daemon \
 	&& sed -i "s/#enable-dbus=yes/enable-dbus=yes/g" /etc/avahi/avahi-daemon.conf \
 	&& dbus-uuidgen --ensure \
-	&& npm install node-red-contrib-fritz node-red-contrib-homekit-bridged node-red-contrib-tado-client node-red-dashboard node-red-node-base64 node-red-node-msgpack node-red-node-random node-red-node-suncalc @rdmtc/node-red-contrib-noble --unsafe-perm \
+	&& npm install node-red-contrib-fritz node-red-contrib-homekit-bridged node-red-contrib-tado-client node-red-dashboard node-red-node-base64 node-red-node-msgpack node-red-node-random node-red-node-suncalc node-red-contrib-bt-presence --unsafe-perm \
 	&& apk del dev-packages \
 	&& npm dedupe \
 	&& npm cache clean --force 
-RUN	sed -ie "s/'noble'/'@abandonware\/noble'/" node_modules/@rdmtc/node-red-contrib-noble/noble/node-red-contrib-noble.js
 
 VOLUME /data
 
