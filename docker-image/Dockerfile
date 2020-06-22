@@ -1,40 +1,103 @@
-FROM nodered/node-red:latest-minimal
+ARG ARCH=amd64
+ARG NODE_VERSION=10
+ARG OS=alpine
 
-COPY entrypoint.sh /usr/src/node-red/entrypoint.sh
+#### Stage BASE ########################################################################################################
+FROM ${ARCH}/node:${NODE_VERSION}-${OS} AS base
 
+# Copy scripts
+COPY scripts/*.sh /tmp/
+
+# Install tools, create Node-RED app and data dir, add user and set rights
+RUN set -ex && \
+    apk add --no-cache \
+    bash \
+    tzdata \
+    iputils \
+    curl \
+    nano \
+    git \
+    openssl \
+    openssh-client \
+    su-exec \
+    avahi \
+    avahi-compat-libdns_sd \
+    dbus \
+    ffmpeg \
+    bluez &&\
+    dbus-uuidgen --ensure && \
+    mkdir -p /usr/src/node-red /data && \
+    deluser --remove-home node && \
+    adduser -h /usr/src/node-red -D -H node-red -u 1000 && \
+    chown -R node-red:root /data && chmod -R g+rwX /data && \ 
+    chown -R node-red:root /usr/src/node-red && chmod -R g+rwX /usr/src/node-red
+
+# Set work directory
 WORKDIR /usr/src/node-red
 
-USER root
+# package.json contains Node-RED NPM module and node dependencies
+COPY package.json .
 
-RUN set -ex \
-	&& apk add --no-cache \
-	  su-exec \
-	  avahi \
-	  avahi-compat-libdns_sd \
-	  dbus \
-	  libcap \
-	  python \
-	  bluez \
-	&& apk add --no-cache --virtual dev-packages \
-	  make \	  
-	  g++ \
-	  avahi-dev \
-	  bluez \
-	  build-base \
-	  linux-headers \
-	  udev \
-	&& setcap cap_net_raw+eip $(eval readlink -f `which node`) \
-	&& chown messagebus:messagebus /var/run/dbus \
-	&& chown avahi:avahi /var/run/avahi-daemon \
-	&& sed -i "s/#enable-dbus=yes/enable-dbus=yes/g" /etc/avahi/avahi-daemon.conf \
-	&& dbus-uuidgen --ensure \
-	&& npm install node-red-contrib-fritz node-red-contrib-homekit-bridged node-red-contrib-tado-client node-red-dashboard node-red-node-base64 node-red-node-msgpack node-red-node-random node-red-node-suncalc node-red-contrib-bt-presence --unsafe-perm \
-	&& apk del dev-packages \
-	&& npm dedupe \
-	&& npm cache clean --force 
+#### Stage BUILD #######################################################################################################
+FROM base AS build
 
-VOLUME /data
+# Install Build tools
+RUN apk add --no-cache --virtual buildtools build-base linux-headers udev avahi-dev && \
+    npm install --unsafe-perm --no-update-notifier --only=production && \
+    /tmp/remove_native_gpio.sh && \
+    cp -R node_modules prod_node_modules && \
+    apk del buildtools && \
+    npm dedupe && \
+    npm cache clean --force
 
+#### Stage RELEASE #####################################################################################################
+FROM base AS RELEASE
+ARG BUILD_DATE
+ARG BUILD_VERSION
+ARG BUILD_REF
+ARG NODE_RED_VERSION
+ARG ARCH
+ARG TAG_SUFFIX=default
+
+LABEL org.label-schema.build-date=${BUILD_DATE} \
+    org.label-schema.docker.dockerfile=".docker/Dockerfile.alpine" \
+    org.label-schema.license="Apache-2.0" \
+    org.label-schema.name="Node-RED c't-Smart-Home" \
+    org.label-schema.version=${BUILD_VERSION} \
+    org.label-schema.description="Low-code programming for event-driven applications." \
+    org.label-schema.url="https://www.ct.de/smarthome" \
+    org.label-schema.vcs-ref=${BUILD_REF} \
+    org.label-schema.vcs-type="Git" \
+    org.label-schema.vcs-url="https://github.com/ct-Open-Source/ct-Smart-Home" \
+    org.label-schema.arch=${ARCH} \
+    authors="Dave Conway-Jones, Nick O'Leary, James Thomas, Raymond Mouthaan, Merlin Schumacher, Jan Mahn"
+
+COPY --from=build /usr/src/node-red/prod_node_modules ./node_modules
+COPY entrypoint.sh /usr/src/node-red/entrypoint.sh
+
+# Chown, install devtools & Clean up
+RUN chown -R node-red:root /usr/src/node-red && \
+    /tmp/install_devtools.sh && \
+    rm -r /tmp/*
+
+USER node-red
+
+# Env variables
+ENV NODE_RED_VERSION=$NODE_RED_VERSION \
+    NODE_PATH=/usr/src/node-red/node_modules:/data/node_modules \
+    FLOWS=flows.json
+
+# ENV NODE_RED_ENABLE_SAFE_MODE=true    # Uncomment to enable safe start mode (flows not running)
+ENV NODE_RED_ENABLE_PROJECTS=true     
+
+# User configuration directory volume
+VOLUME ["/data"]
+
+# Expose the listening port of node-red
 EXPOSE 1880
 
+# Add a healthcheck (default every 30 secs)
+HEALTHCHECK CMD curl http://localhost:1880/ || exit 1
+
+USER root 
 CMD ["/bin/sh", "/usr/src/node-red/entrypoint.sh" ]

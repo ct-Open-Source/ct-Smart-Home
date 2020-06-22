@@ -1,19 +1,20 @@
 {
     "name": "ctnodered",
-    "version": "1.0.0",
+    "version": "1.0.6",
     "description": "A visual tool for wiring the Internet of Things",
-    "homepage": "http://nodered.org",
+    "homepage": "hhttps://www.ct.de/smarthome",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/node-red/node-red-docker.git"
+        "url": "https://github.com/ct-Open-Source/ct-Smart-Home.git"
     },
     "main": "node_modules/node-red/red/red.js",
     "scripts": {
-        "start": "node $NODE_OPTIONS node_modules/node-red/red.js -v $FLOWS"
+        "start": "node $NODE_OPTIONS node_modules/node-red/red.js -v $FLOWS",
+        "debug": "node --inspect=0.0.0.0:9229 $NODE_OPTIONS node_modules/node-red/red.js $FLOWS",
+        "debug_brk": "node --inspect=0.0.0.0:9229 --inspect-brk $NODE_OPTIONS node_modules/node-red/red.js $FLOWS"
     },
-    "contributors": [
-        {
+    "contributors": [{
             "name": "Dave Conway-Jones"
         },
         {
@@ -21,6 +22,9 @@
         },
         {
             "name": "James Thomas"
+        },
+        {
+            "name": "Raymond Mouthaan"
         },
         {
             "name": "Jan Mahn"
@@ -33,7 +37,7 @@
         "node-red": "latest",
         "node-red-contrib-fritz": "*",
         "node-red-contrib-homekit-bridged": "*",
-        "node-red-contrib-noble": "*",
+        "node-red-contrib-bt-presence": "*",
         "node-red-contrib-tado-client": "*",
         "node-red-dashboard": "*",
         "node-red-node-base64": "*",
@@ -45,4 +49,3 @@
         "node": "12.*.*"
     }
 }
-

@@ -8,7 +8,6 @@ services:
     volumes:
       - ./data/nodered:/data
       - /etc/localtime:/etc/localtime
-      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
     depends_on:
       - mqtt
     privileged: true
