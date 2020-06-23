@@ -23,12 +23,20 @@ services:
       - "9001:9001"
     volumes:
       - ./data/mqtt:/mosquitto
+      - /etc/localtime:/etc/localtime
     restart: always
+    environment:
+      - TZ=Europe/Berlin
     
   zigbee:
     image: koenkk/zigbee2mqtt
     volumes:
       - ./data/zigbee:/app/data
+      - /run/udev:/run/udev:ro
+      - /etc/localtime:/etc/localtime
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0"
     restart: always
+    privileged: true
+    environment:
+      - TZ=Europe/Berlin
