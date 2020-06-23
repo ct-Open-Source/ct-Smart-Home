@@ -2,8 +2,7 @@ version: '3.6'
 
 services:
   nodered:
-#    image: ctmagazin/ctnodered:latest
-    image: testing:node-red-build
+    image: ctmagazin/ctnodered:latest
     ports:
       - "1880:1880"
     volumes:
@@ -49,4 +48,4 @@ services:
       - TZ=Europe/Berlin
     ports:
       - 8880:80
-    restart: unless-stopped
+    restart: always
