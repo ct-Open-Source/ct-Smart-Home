@@ -10,7 +10,6 @@ services:
       - /etc/localtime:/etc/localtime
     depends_on:
       - mqtt
-    privileged: true
     restart: always
     network_mode: "host"
     environment:
