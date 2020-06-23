@@ -30,7 +30,7 @@ RUN set -ex && \
     deluser --remove-home node && \
     adduser -h /usr/src/node-red -D -H node-red -u 1000 && \
     chown -R node-red:root /data && chmod -R g+rwX /data && \ 
-    chown -R node-red:root /usr/src/node-red && chmod -R g+rwX /usr/src/node-red
+    chown -R node-red:root /usr/src/node-red && chmod -R g+rwX /usr/src/node-red 
 
 # Set work directory
 WORKDIR /usr/src/node-red
@@ -62,7 +62,7 @@ ARG TAG_SUFFIX=default
 LABEL org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.docker.dockerfile=".docker/Dockerfile.alpine" \
     org.label-schema.license="Apache-2.0" \
-    org.label-schema.name="Node-RED c't-Smart-Home" \
+    org.label-schema.name="Node-RED for c't-Smart-Home" \
     org.label-schema.version=${BUILD_VERSION} \
     org.label-schema.description="Low-code programming for event-driven applications." \
     org.label-schema.url="https://www.ct.de/smarthome" \
@@ -78,7 +78,8 @@ COPY entrypoint.sh /usr/src/node-red/entrypoint.sh
 # Chown, install devtools & Clean up
 RUN chown -R node-red:root /usr/src/node-red && \
     /tmp/install_devtools.sh && \
-    rm -r /tmp/*
+    rm -r /tmp/* && \
+    setcap 'cap_net_raw+eip' `which node`
 
 USER node-red
 

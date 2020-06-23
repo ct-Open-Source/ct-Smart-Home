@@ -37,7 +37,7 @@
         "node-red": "latest",
         "node-red-contrib-fritz": "*",
         "node-red-contrib-homekit-bridged": "*",
-        "node-red-contrib-bt-presence": "*",
+        "node-red-contrib-noble-bluetooth": "*",
         "node-red-contrib-tado-client": "*",
         "node-red-dashboard": "*",
         "node-red-node-base64": "*",
