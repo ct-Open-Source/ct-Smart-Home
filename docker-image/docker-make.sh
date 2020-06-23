@@ -5,7 +5,7 @@ echo "#########################################################################"
 echo "node-red version: ${NODE_RED_VERSION}"
 echo "#########################################################################"
 
-docker build \
+docker build --no-cache \
     --build-arg ARCH=amd64 \
     --build-arg NODE_VERSION=12 \
     --build-arg NODE_RED_VERSION=${NODE_RED_VERSION} \
