@@ -41,5 +41,4 @@ jobs:
             --build-arg OS=alpine \
             --build-arg BUILD_DATE="$(date +"%Y-%m-%dT%H:%M:%SZ")" \
             --build-arg TAG_SUFFIX=devel-${{ matrix.node_version }} \
-            --squash \
             --file ./docker-image/Dockerfile ./docker-image
