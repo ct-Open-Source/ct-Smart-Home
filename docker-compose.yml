@@ -2,7 +2,8 @@ version: '3.6'
 
 services:
   nodered:
-    image: ctmagazin/ctnodered:latest
+#    image: ctmagazin/ctnodered:latest
+    image: testing:node-red-build
     ports:
       - "1880:1880"
     volumes:
@@ -39,3 +40,12 @@ services:
     privileged: true
     environment:
       - TZ=Europe/Berlin
+
+  zigbeeadmin:
+    image: carldebilly/zigbee2mqttassistant
+    environment:
+      - Z2MA_SETTINGS__MQTTSERVER=mqtt
+      - TZ=Europe/Berlin
+    ports:
+      - 8880:80
+    restart: unless-stopped

@@ -24,7 +24,7 @@ function detect_zigbee_device {
 function create_zigbee2mqtt_config {
 	cat > data/zigbee/configuration.yaml <<EOF
 # Home Assistant integration (MQTT discovery)
-homeassistant: false
+homeassistant: true 
 
 # allow new devices to join
 permit_join: true
