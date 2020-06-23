@@ -22,19 +22,6 @@ function detect_zigbee_device {
 }
 
 function create_zigbee2mqtt_config {
-	key=$(dd if=/dev/urandom bs=1 count=16 2>/dev/null | od -A n -t x1 | awk '{printf "["} {for(i = 1; i< NF; i++) {printf "0x%s, ", $i}} {printf "0x%s]\n", $NF}')
-	echo "Zigbee2Mqtt configuration is missing. creating it."
-	echo
-	echo
-	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "This is your random Zigbee encryption key:" 
-	echo
-	echo $key
-	echo
-	echo "Store it safely or you will have to repair all of your devices."
-	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo
-	echo
 	cat > data/zigbee/configuration.yaml <<EOF
 # Home Assistant integration (MQTT discovery)
 homeassistant: false
@@ -52,15 +39,9 @@ mqtt:
   # user: my_user
   # password: my_password
 
-# Serial settings
-serial:
-  # Location of CC2531 USB sniffer
-  port: /dev/ttyACM0
-  disable_led: false
-
 advanced:
   channel: 25
-  network_key: $key
+  network_key: GENERATE
 
 EOF
 
@@ -82,8 +63,9 @@ function build_data_structure {
 
 	sudo chown 1883:1883 data/mqtt
 	sudo chown -R 1883:1883 data/mqtt/*
-	sudo chown 1001:1001 data/nodered
-	sudo chown -Rf 1001:1001 data/nodered/*
+	sudo chown 1000:1000 data/nodered
+	sudo chown -Rf 1000:1000 data/nodered/*
+	sudo chown 0:0 data/mqtt
 }
 
 function check_dependencies {
