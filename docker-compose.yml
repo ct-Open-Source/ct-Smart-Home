@@ -36,6 +36,7 @@ services:
       - /etc/localtime:/etc/localtime
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0"
+      - "/dev/ttyACM1:/dev/ttyACM1"
     restart: always
     privileged: true
     environment:

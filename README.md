@@ -56,7 +56,7 @@ The Node-RED container is based on [the official one](https://hub.docker.com/r/n
 | latest-10             | 1.x                    | 10              | latest release version    | all     |
 | latest-12             | 1.x                    | 12              | latest release version    | all     |
 | latest-14             | 1.x                    | 14              | latest release version    | all     |
-| devel                 | latest release version | 10              | build from current master | all     |
+| devel                 | latest release version | 12              | build from current master | all     |
 | devel-10              | 1.x                    | 10              | build from current master | all     |
 | devel-12              | 1.x                    | 12              | build from current master | all     |
 | devel-14              | 1.x                    | 14              | build from current master | all     |

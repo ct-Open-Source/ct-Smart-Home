@@ -1,9 +1,8 @@
-ARG ARCH=amd64
-ARG NODE_VERSION=10
+ARG NODE_VERSION=12
 ARG OS=alpine
 
 #### Stage BASE ########################################################################################################
-FROM ${ARCH}/node:${NODE_VERSION}-${OS} AS base
+FROM node:${NODE_VERSION}-${OS} AS base
 
 # Copy scripts
 COPY scripts/*.sh /tmp/
@@ -52,11 +51,11 @@ RUN apk add --no-cache --virtual buildtools build-base linux-headers udev avahi-
 
 #### Stage RELEASE #####################################################################################################
 FROM base AS RELEASE
+USER root 
 ARG BUILD_DATE
 ARG BUILD_VERSION
 ARG BUILD_REF
-ARG NODE_RED_VERSION
-ARG ARCH
+ARG NODE_RED_VERSION=latest
 ARG TAG_SUFFIX=default
 
 LABEL org.label-schema.build-date=${BUILD_DATE} \
@@ -69,7 +68,7 @@ LABEL org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF} \
     org.label-schema.vcs-type="Git" \
     org.label-schema.vcs-url="https://github.com/ct-Open-Source/ct-Smart-Home" \
-    org.label-schema.arch=${ARCH} \
+    org.label-schema.arch=$TARGETPLATFORM \
     authors="Dave Conway-Jones, Nick O'Leary, James Thomas, Raymond Mouthaan, Merlin Schumacher, Jan Mahn"
 
 COPY --from=build /usr/src/node-red/prod_node_modules ./node_modules
@@ -81,8 +80,6 @@ RUN chown -R node-red:root /usr/src/node-red && \
     rm -r /tmp/* && \
     setcap 'cap_net_raw+eip' `which l2ping` && \
     setcap 'cap_net_raw+eip' `which node`
-
-USER node-red
 
 # Env variables
 ENV NODE_RED_VERSION=$NODE_RED_VERSION \
@@ -101,5 +98,4 @@ EXPOSE 1880
 # Add a healthcheck (default every 30 secs)
 HEALTHCHECK CMD curl http://localhost:1880/ || exit 1
 
-USER root 
 CMD ["/bin/sh", "/usr/src/node-red/entrypoint.sh" ]

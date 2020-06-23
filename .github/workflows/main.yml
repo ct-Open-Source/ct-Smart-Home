@@ -16,8 +16,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Change Node-Version in Dockerfile to  ${{ matrix.node_version }}
-        run: sed -i -e "s/'latest-minimal'/'latest-{{$ matrix.node_version }}-minimal/" ./docker-image/Dockerfile
       - name: Set up Docker Buildx
         id: buildx
         uses: crazy-max/ghaction-docker-buildx@v1.0.2
@@ -30,7 +28,7 @@ jobs:
           echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - name: Run Buildx
         run: |
-          if [ ${{ matrix.node_version }} -eq "10" ]; then
+          if [ ${{ matrix.node_version }} -eq "12" ]; then
               export DEVEL="-t ctmagazin/ctnodered:devel"
           fi
           docker buildx build \
@@ -38,4 +36,10 @@ jobs:
             -o type=registry \
             -t ctmagazin/ctnodered:"devel-${{ matrix.node_version }}" \
             $DEVEL \
+            --build-arg NODE_VERSION=${{ matrix.node_version }} \
+            --build-arg NODE_RED_VERSION=latest \
+            --build-arg OS=alpine \
+            --build-arg BUILD_DATE="$(date +"%Y-%m-%dT%H:%M:%SZ")" \
+            --build-arg TAG_SUFFIX=devel-${{ matrix.node_version }} \
+            --squash
             --file ./docker-image/Dockerfile ./docker-image
