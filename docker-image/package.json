@@ -1,6 +1,6 @@
 {
     "name": "ctnodered",
-    "version": "1.0.6",
+    "version": "latest",
     "description": "A visual tool for wiring the Internet of Things",
     "homepage": "hhttps://www.ct.de/smarthome",
     "license": "Apache-2.0",
@@ -39,11 +39,8 @@
         "node-red-contrib-homekit-bridged": "*",
         "node-red-contrib-noble-bluetooth": "*",
         "node-red-contrib-tado-client": "*",
-        "node-red-dashboard": "*",
-        "node-red-node-base64": "*",
-        "node-red-node-msgpack": "*",
-        "node-red-node-random": "*",
-        "node-red-node-suncalc": "*"
+        "node-red-contrib-zigbee2mqtt": "*",
+        "node-red-dashboard": "*"
     },
     "engines": {
         "node": "12.*.*"
