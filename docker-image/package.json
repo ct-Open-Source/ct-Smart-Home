@@ -1,6 +1,6 @@
 {
     "name": "ctnodered",
-    "version": "latest",
+    "version": "1.0.0",
     "description": "A visual tool for wiring the Internet of Things",
     "homepage": "hhttps://www.ct.de/smarthome",
     "license": "Apache-2.0",
