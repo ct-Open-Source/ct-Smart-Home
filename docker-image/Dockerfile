@@ -76,7 +76,6 @@ COPY entrypoint.sh /usr/src/node-red/entrypoint.sh
 
 # Chown, install devtools & Clean up
 RUN chown -R node-red:root /usr/src/node-red && \
-    /tmp/install_devtools.sh && \
     rm -r /tmp/* && \
     setcap 'cap_net_raw+eip' `which l2ping` && \
     setcap 'cap_net_raw+eip' `which node`
