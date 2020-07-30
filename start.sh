@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function detect_zigbee_device {
-	if usb_dev=$(lsusb -d 0451:); then
-		usb_dev_count=$(ls -1 /dev/ttyACM* 2>/dev/null | wc -l)
+	if lsusb -d "0451:"; then
+		usb_dev_count=$(find /dev -maxdepth 1 name 'ttyACM*' 2>/dev/null | wc -l)
 		if [ "$usb_dev_count" -gt 1 ]; then
 			>&2 echo "There are multiple devices connected, that could be Zigbee USB adaptors. Please check data/zigbee/configuration.yml, if the device is wrong. /dev/ttyACM0 is used as the default."
 
@@ -83,7 +83,7 @@ function check_dependencies {
 function start {
 
 	device=$(detect_zigbee_device)
-	if [ $device == "False" ]; then
+	if [ "$device" == "False" ]; then
 		echo "No Zigbee adaptor found. Not starting Zigbee2MQTT."
 		container="nodered mqtt"
 	fi
@@ -93,7 +93,12 @@ function start {
 	fi
 
 	echo "Starting the containers"
-	docker-compose up -d $container
+    if [ -z "$container" ]; then
+        docker-compose up -d
+    else
+
+        docker-compose up -d "$container"
+    fi
 }
 
 function stop {
@@ -103,20 +108,17 @@ function stop {
 
 function update {
 	echo "Shutting down all running containers and removing them."
-	docker-compose down
-	if [ ! $? -eq 0 ]; then
+	if docker-compose down; then
 		echo "Updating failed. Please check the repository on GitHub."
 	fi	    
 	echo "Pulling latest release via git."
 	git fetch --tags
-	latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
-	git checkout $latestTag
-	if [ ! $? -eq 0 ]; then
+	latestTag=$(git describe --tags "$(git rev-list --tags --max-count=1)")
+	if git checkout "$latestTag"; then
 		echo "Updating failed. Please check the repository on GitHub."
 	fi	    
 	echo "Pulling docker images."
-	docker-compose pull
-	if [ ! $? -eq 0 ]; then
+	if docker-compose pull; then
 		echo "Updating failed. Please check the repository on GitHub."
 	fi	    
 	start
