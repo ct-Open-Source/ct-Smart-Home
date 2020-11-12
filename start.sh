@@ -29,6 +29,12 @@ homeassistant: true
 # allow new devices to join
 permit_join: true
 
+# enable frontend
+frontend:
+  port: 8080
+experimental:
+  new_api: true
+
 # MQTT settings
 mqtt:
   # MQTT base topic for zigbee2mqtt MQTT messages
