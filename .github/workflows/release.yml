@@ -23,11 +23,11 @@ jobs:
       - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
       - name: Docker login
-        run: | 
+        run: |
           echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - name: Run Buildx
         run: |
-          if [ ${{ matrix.node_version }} -eq "10" ]; then
+          if [ ${{ matrix.node_version }} -eq "12" ]; then
               export LATEST="-t ctmagazin/ctnodered:latest"
           fi
           docker buildx build \
@@ -37,4 +37,3 @@ jobs:
             -t ctmagazin/ctnodered:latest-${{ matrix.node_version }} \
             $LATEST \
             --file ./docker-image/Dockerfile ./docker-image
-      

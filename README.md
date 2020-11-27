@@ -56,14 +56,15 @@ The Node-RED container is based on [the official one](https://hub.docker.com/r/n
 
 | Container-Tag         | Node-RED version       | Node.js version | Notes                     | Arch    |
 | --------------------- | ---------------------- | --------------- | ------------------------- | ------- |
-| latest                | latest release version | LTS             | latest release version    | all     |
+| *latest*              | latest release version | *12*            | latest release version    | all     |
 | latest-10             | 1.x                    | 10              | latest release version    | all     |
 | latest-12             | 1.x                    | 12              | latest release version    | all     |
 | latest-14             | 1.x                    | 14              | latest release version    | all     |
-| devel                 | latest devel version   | 12              | build from current master | all     |
-| devel-10              | 1.x                    | 10              | build from current master | all     |
-| devel-12              | 1.x                    | 12              | build from current master | all     |
-| devel-14              | 1.x                    | 14              | build from current master | all     |
+| *devel*               | latest devel version   | *14*            | build from current devel  | all     |
+| devel-10              | 1.x                    | 10              | build from current devel  | all     |
+| devel-12              | 1.x                    | 12              | build from current devel  | all     |
+| devel-14              | 1.x                    | 14              | build from current devel  | all     |
+|=======================|========================|=================|===========================|=========|
 | release-1.1.1-amd64   | 0.20.5                 | 8               | deprecated                | amd64   |
 | release-1.1.1-arm32v7 | 0.20.5                 | 8               | deprecated                | arm32v7 |
 

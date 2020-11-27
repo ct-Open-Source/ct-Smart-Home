@@ -1,12 +1,12 @@
-name: Rebuild Master 
+name: Rebuild Master
 
 on:
   schedule:
-    - cron: '15 1 * * *'
+    - cron: "15 1 * * *"
   push:
-    branches: 
+    branches:
       - master
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,18 +31,14 @@ jobs:
       - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
       - name: Docker login
-        run: | 
+        run: |
           echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - name: Run Buildx
         run: |
-          if [ ${{ matrix.node_version }} -eq "12" ]; then
+          if [ ${{ matrix.node_version }} -eq "14" ]; then
               export DEVEL="-t ctmagazin/ctnodered:devel"
           fi
-          if [ ${{ matrix.node_version }} -eq "14" ]; then
-              export PLATFORMS="linux/amd64,linux/arm64,linux/s390x "
-          else
-              export PLATFORMS="linux/amd64,linux/arm/v7,linux/arm64/v8,linux/arm/v6,linux/s390x "
-          fi
+          export PLATFORMS="linux/amd64,linux/arm/v7,linux/arm64/v8,linux/arm/v6,linux/s390x "
           docker buildx build \
             --platform $PLATFORMS \
             -o type=registry \
