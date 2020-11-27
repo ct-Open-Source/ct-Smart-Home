@@ -145,15 +145,15 @@ case "$1" in
 		;;
 	* )
 		cat << EOF
-		c't-Smart-Home – setup script
-		—————————————————————————————
-		Usage:
-		start.sh update – to update this copy of the repo
-		start.sh start – run all containers
-		start.sh stop – stop all containers
-		start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.
+🏡 c't-Smart-Home – setup script
+—————————————————————————————
+Usage:
+start.sh update – to update this copy of the repo
+start.sh start – run all containers
+start.sh stop – stop all containers
+start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.
 
-		Check https://github.com/ct-Open-Source/ct-Smart-Home/ for updates.
-		EOF
+Check https://github.com/ct-Open-Source/ct-Smart-Home/ for updates.
+EOF
 		;;
 esac
