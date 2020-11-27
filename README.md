@@ -2,7 +2,7 @@
 
 A ready-to-use Node-RED setup for home automation maintained by [german computer magazine c't](https://www.ct.de/smarthome).
 
-It includes [Node-RED](https://nodered.org/), MQTT (provided by [Eclipse Mosquitto](https://mosquitto.org/)), Zigbee-Support (provided by [zigbee2mqtt](https://www.zigbee2mqtt.io/)). 
+It includes [Node-RED](https://nodered.org/), MQTT (provided by [Eclipse Mosquitto](https://mosquitto.org/)), Zigbee-Support (provided by [zigbee2mqtt](https://www.zigbee2mqtt.io/)).
 
 We also added Node-RED-Nodes for [HomeKit](https://github.com/NRCHKB/node-red-contrib-homekit-bridged),  [FritzBox](https://github.com/bashgroup/node-red-contrib-fritz), [Tado](https://github.com/mattdavis90/node-red-contrib-tado-client), [Bluetooth-LE-Support](https://github.com/clausbroch/node-red-contrib-noble-bluetooth), [Zigbee2Mqtt-Support](https://flows.nodered.org/node/node-red-contrib-zigbee2mqtt) and a [Dashboard](https://github.com/node-red/node-red-dashboard).
 
@@ -86,6 +86,6 @@ Zigbee2mqtt is described here: [https://ct.de/ygdp](https://ct.de/ygdp)
 
 [Node-RED documentation](https://nodered.org/docs/)
 
-[Zigbee2MQTT documentation](https://www.zigbee2mqtt.io/) (Note: If you use and enjoy the Zigbee service consider sponsoring Koen Kanters great work!)
+[Zigbee2MQTT documentation](https://www.zigbee2mqtt.io/) (Note: If you use and enjoy the Zigbee service, consider [sponsoring Koen Kanters](https://www.paypal.com/paypalme/koenkk) great work!)
 
 [Mosquitto documentation](https://mosquitto.org/man/mosquitto-8.html)
