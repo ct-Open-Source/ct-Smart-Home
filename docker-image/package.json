@@ -1,6 +1,6 @@
 {
     "name": "ctnodered",
-    "version": "1.0.0",
+    "version": "1.5.0",
     "description": "A visual tool for wiring the Internet of Things",
     "homepage": "hhttps://www.ct.de/smarthome",
     "license": "Apache-2.0",
@@ -14,7 +14,8 @@
         "debug": "node --inspect=0.0.0.0:9229 $NODE_OPTIONS node_modules/node-red/red.js $FLOWS",
         "debug_brk": "node --inspect=0.0.0.0:9229 --inspect-brk $NODE_OPTIONS node_modules/node-red/red.js $FLOWS"
     },
-    "contributors": [{
+    "contributors": [
+        {
             "name": "Dave Conway-Jones"
         },
         {
@@ -31,6 +32,18 @@
         },
         {
             "name": "Merlin Schumacher"
+        },
+        {
+            "name": "Andrijan Möcker"
+        },
+        {
+            "name": "Anton Golubev"
+        },
+        {
+            "name": "J. Völker"
+        },
+        {
+            "name": "GnafGnaf"
         }
     ],
     "dependencies": {
@@ -41,8 +54,5 @@
         "node-red-contrib-tado-client": "*",
         "node-red-contrib-zigbee2mqtt": "*",
         "node-red-dashboard": "*"
-    },
-    "engines": {
-        "node": "12.*.*"
     }
 }
