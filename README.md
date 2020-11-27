@@ -2,9 +2,9 @@
 
 A ready-to-use Node-RED setup for home automation maintained by [german computer magazine c't](https://www.ct.de/smarthome).
 
-It includes [Node-RED](https://nodered.org/), MQTT (provided by [Eclipse Mosquitto](https://mosquitto.org/)), Zigbee-Support (provided by [zigbee2mqtt](https://www.zigbee2mqtt.io/)). There is also [Zigbee2MqttAssistant](https://github.com/yllibed/Zigbee2MqttAssistant), an admin interface for zigbee2mqtt.
+It includes [Node-RED](https://nodered.org/), MQTT (provided by [Eclipse Mosquitto](https://mosquitto.org/)), Zigbee-Support (provided by [zigbee2mqtt](https://www.zigbee2mqtt.io/)). 
 
-We also added Node-RED-Nodes for [HomeKit](https://github.com/NRCHKB/node-red-contrib-homekit-bridged),  [FritzBox](https://github.com/bashgroup/node-red-contrib-fritz), [Tado](https://github.com/mattdavis90/node-red-contrib-tado-client), [Bluetooth-LE-Support](https://github.com/clausbroch/node-red-contrib-noble-bluetooth) and a [Dashboard](https://github.com/node-red/node-red-dashboard).
+We also added Node-RED-Nodes for [HomeKit](https://github.com/NRCHKB/node-red-contrib-homekit-bridged),  [FritzBox](https://github.com/bashgroup/node-red-contrib-fritz), [Tado](https://github.com/mattdavis90/node-red-contrib-tado-client), [Bluetooth-LE-Support](https://github.com/clausbroch/node-red-contrib-noble-bluetooth), [Zigbee2Mqtt-Support](https://flows.nodered.org/node/node-red-contrib-zigbee2mqtt) and a [Dashboard](https://github.com/node-red/node-red-dashboard).
 
 ![](https://img.shields.io/github/stars/ct-Open-Source/ct-Smart-Home.svg)
 ![](https://img.shields.io/github/release/ct-Open-Source/ct-Smart-Home.svg)
@@ -72,7 +72,7 @@ We also use the `:latest` versions of [Eclipse Mosquitto](https://hub.docker.com
 
 ## How to reach the services
 
-After starting the containers you'll reach Node-RED [http://docker-host:1880](http://docker-host:1880) and the Zigbee administrative interface at [http://docker-host:8880](http://docker-host:8880). Mosquitto is available on Port 1883 (and 9001 for websockets). Zigbee2mqtt itself provides no external interfaces, but you can see it's output in the container logs.
+After starting the containers you'll reach Node-RED [http://docker-host:1880](http://docker-host:1880) and the Zigbee administrative interface at [http://docker-host:188](http://docker-host:1881). Mosquitto is available on Port 1883 (and 9001 for websockets). You can see more details of the processes output in the container logs with the command `docker-compose logs`.
 
 ## Further information
 
