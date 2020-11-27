@@ -2,7 +2,7 @@
 
 A ready-to-use Node-RED setup for home automation maintained by [german computer magazine c't](https://www.ct.de/smarthome).
 
-It includes [Node-RED](https://nodered.org/), MQTT (provided by [Eclipse Mosquitto](https://mosquitto.org/)), Zigbee-Support (provided by [zigbee2mqtt](https://www.zigbee2mqtt.io/)). There is also [Zigbee2MqttAssistant](https://github.com/yllibed/Zigbee2MqttAssistant), an admin interface for zigbee2mqtt. 
+It includes [Node-RED](https://nodered.org/), MQTT (provided by [Eclipse Mosquitto](https://mosquitto.org/)), Zigbee-Support (provided by [zigbee2mqtt](https://www.zigbee2mqtt.io/)). There is also [Zigbee2MqttAssistant](https://github.com/yllibed/Zigbee2MqttAssistant), an admin interface for zigbee2mqtt.
 
 We also added Node-RED-Nodes for [HomeKit](https://github.com/NRCHKB/node-red-contrib-homekit-bridged),  [FritzBox](https://github.com/bashgroup/node-red-contrib-fritz), [Tado](https://github.com/mattdavis90/node-red-contrib-tado-client), [Bluetooth-LE-Support](https://github.com/clausbroch/node-red-contrib-noble-bluetooth) and a [Dashboard](https://github.com/node-red/node-red-dashboard).
 
@@ -15,13 +15,14 @@ We also added Node-RED-Nodes for [HomeKit](https://github.com/NRCHKB/node-red-co
 
 ## Requirements
 
-To get this going you need a working [Docker 18.02.0+ setup](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/). 
+To get this going you need a working [Docker 18.02.0+ setup](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/).
 
 This setup will run on any  AMD64 or ARM32v7 Linux machine. This includes virtually any PC or a Raspberry Pi 3 or newer. We also build containers for ARM64v8, ARM32v6 and S390X but they are untested. If you want to run the containers on macOS, try running `start.sh` as root.
 
 If you want to control Zigbee devices you also will need a Zigbee controller stick. Have a look at [Zigbee2MQTT's documentation](https://www.zigbee2mqtt.io/getting_started/what_do_i_need.html) for that.
 
 ## Getting started
+
 * Install docker and docker-compose: [german article on installation process](https://www.heise.de/ct/artikel/Docker-einrichten-unter-Linux-Windows-macOS-4309355.html?hg=1&hgi=3&hgf=false)
 * Clone/Download this repository
 * `cd` into the folder containing this repos files
@@ -30,14 +31,17 @@ If you want to control Zigbee devices you also will need a Zigbee controller sti
 * Backup the `data` folder regularly it contains all your data and configuration files
 
 ### `start.sh` options
-```
-c't-Smart-Home – setup script                                                                                                                             
-=============================
+
+```plaintext
+🏡 c't-Smart-Home – setup script
+—————————————————————————————
 Usage:
 start.sh update – to update this copy of the repo
 start.sh start – run all containers
 start.sh stop – stop all containers
 start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.
+
+Check https://github.com/ct-Open-Source/ct-Smart-Home/ for updates.
 ```
 
 ### Manual start
@@ -56,7 +60,7 @@ The Node-RED container is based on [the official one](https://hub.docker.com/r/n
 | latest-10             | 1.x                    | 10              | latest release version    | all     |
 | latest-12             | 1.x                    | 12              | latest release version    | all     |
 | latest-14             | 1.x                    | 14              | latest release version    | all     |
-| devel                 | latest release version | 12              | build from current master | all     |
+| devel                 | latest devel version   | 12              | build from current master | all     |
 | devel-10              | 1.x                    | 10              | build from current master | all     |
 | devel-12              | 1.x                    | 12              | build from current master | all     |
 | devel-14              | 1.x                    | 14              | build from current master | all     |
@@ -65,9 +69,9 @@ The Node-RED container is based on [the official one](https://hub.docker.com/r/n
 
 We also use the `:latest` versions of [Eclipse Mosquitto](https://hub.docker.com/_/eclipse-mosquitto) and [Zigbee2mqtt](https://github.com/Koenkk/zigbee2mqtt.io).
 
-## How to reach the services 
+## How to reach the services
 
-After starting the containers you'll reach Node-RED [http://docker-host:1880](http://docker-host:1880) and the Zigbee administrative interface at [http://docker-host:8880](http://docker-host:8880). Mosquitto is available on Port 1883 (and 9001 for websockets). Zigbee2mqtt itself provides no external interfaces, but you can see it's output in the container logs. 
+After starting the containers you'll reach Node-RED [http://docker-host:1880](http://docker-host:1880) and the Zigbee administrative interface at [http://docker-host:8880](http://docker-host:8880). Mosquitto is available on Port 1883 (and 9001 for websockets). Zigbee2mqtt itself provides no external interfaces, but you can see it's output in the container logs.
 
 ## Further information
 
@@ -79,9 +83,8 @@ Zigbee2mqtt is described here: [https://ct.de/ygdp](https://ct.de/ygdp)
 
 ### Documentation
 
-[Node-RED documentation](https://nodered.org/docs/) 
+[Node-RED documentation](https://nodered.org/docs/)
 
 [Zigbee2MQTT documentation](https://www.zigbee2mqtt.io/) (Note: If you use and enjoy the Zigbee service consider sponsoring Koen Kanters great work!)
 
 [Mosquitto documentation](https://mosquitto.org/man/mosquitto-8.html)
-
