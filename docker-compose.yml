@@ -39,6 +39,6 @@ services:
     restart: always
     privileged: true
     ports:
-      - 8080:8080
+      - 1881:1881
     environment:
       - TZ=Europe/Berlin

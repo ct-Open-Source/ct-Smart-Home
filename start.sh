@@ -31,7 +31,7 @@ permit_join: true
 
 # enable frontend
 frontend:
-  port: 8080
+  port: 1881 
 experimental:
   new_api: true
 
