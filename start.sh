@@ -51,12 +51,12 @@ advanced:
 
 EOF
 
-echo "Disable permit_join in data/zigbee/configuration.yaml after you have paired all of your devices!"
+echo '⚠️  Disable permit_join in data/zigbee/configuration.yaml or the Zigbee2MQTT webinterface on port 8080, after you have paired all of your devices!'
 
 }
 
 function build_data_structure {
-	echo "data folder is missing. creating it"
+	echo '📄 Configuration folder ./data is missing. Creating it from scratch.'
 	mkdir -p data/mqtt/config
 	mkdir -p data/zigbee/
 	mkdir -p data/nodered/
@@ -76,12 +76,12 @@ function build_data_structure {
 
 function check_dependencies {
 	if ! [ -x "$(command -v docker-compose)" ]; then
-		echo 'Error: docker-compose is not installed.' >&2
+		echo '⚠️  Error: docker-compose is not installed.' >&2
 		exit 1
 	fi
 
 	if ! [ -x "$(command -v git)" ]; then
-		echo 'Error: git is not installed.' >&2
+		echo '⚠️  Error: git is not installed.' >&2
 		exit 1
 	fi
 }
@@ -90,7 +90,7 @@ function start {
 
 	device=$(detect_zigbee_device)
 	if [ $device == "False" ]; then
-		echo "No Zigbee adaptor found. Not starting Zigbee2MQTT."
+		echo '⚠️  No Zigbee adaptor found. Not starting Zigbee2MQTT.'
 		container="nodered mqtt"
 	fi
 
@@ -98,32 +98,32 @@ function start {
 		build_data_structure    
 	fi
 
-	echo "Starting the containers"
+	echo '🏃 Starting the containers'
 	docker-compose up -d $container
 }
 
 function stop {
-	echo "Stopping all containers"
+	echo '🛑 Stopping all containers'
 	docker-compose stop
 }
 
 function update {
-	echo "Shutting down all running containers and removing them."
+	echo '☠️  Shutting down all running containers and removing them.'
 	docker-compose down
 	if [ ! $? -eq 0 ]; then
-		echo "Updating failed. Please check the repository on GitHub."
+		echo '⚠️  Updating failed. Please check the repository on GitHub.'
 	fi	    
-	echo "Pulling latest release via git."
+	echo '⬇️  Pulling latest release via git.'
 	git fetch --tags
 	latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
 	git checkout $latestTag
 	if [ ! $? -eq 0 ]; then
-		echo "Updating failed. Please check the repository on GitHub."
+		echo '⚠️  Updating failed. Please check the repository on GitHub.'
 	fi	    
-	echo "Pulling docker images."
+	echo '⬇️  Pulling docker images.'
 	docker-compose pull
 	if [ ! $? -eq 0 ]; then
-		echo "Updating failed. Please check the repository on GitHub."
+		echo '⚠️  Updating failed. Please check the repository on GitHub.'
 	fi	    
 	start
 }
@@ -144,12 +144,16 @@ case "$1" in
 		build_data_structure
 		;;
 	* )
-		echo "c't-Smart-Home – setup script"
-		echo "============================="
-		echo "Usage:"
-		echo "start.sh update – to update this copy of the repo"
-		echo "start.sh start – run all containers"
-		echo "start.sh stop – stop all containers"
-		echo "start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups."
+		cat << EOF
+		c't-Smart-Home – setup script
+		—————————————————————————————
+		Usage:
+		start.sh update – to update this copy of the repo
+		start.sh start – run all containers
+		start.sh stop – stop all containers
+		start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.
+
+		Check https://github.com/ct-Open-Source/ct-Smart-Home/ for updates.
+		EOF
 		;;
 esac

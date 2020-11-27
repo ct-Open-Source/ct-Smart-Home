@@ -42,12 +42,3 @@ services:
       - 8080:8080
     environment:
       - TZ=Europe/Berlin
-
-  zigbeeadmin:
-    image: carldebilly/zigbee2mqttassistant
-    environment:
-      - Z2MA_SETTINGS__MQTTSERVER=mqtt
-      - TZ=Europe/Berlin
-    ports:
-      - 8880:80
-    restart: always
