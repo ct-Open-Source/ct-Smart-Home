@@ -38,6 +38,8 @@ services:
       - "/dev/ttyACM1:/dev/ttyACM1"
     restart: always
     privileged: true
+    ports:
+      - 8080:8080
     environment:
       - TZ=Europe/Berlin
 
