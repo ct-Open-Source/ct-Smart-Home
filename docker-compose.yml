@@ -3,8 +3,6 @@ version: '3.6'
 services:
   nodered:
     image: ctmagazin/ctnodered:latest
-    ports:
-      - "1880:1880"
     volumes:
       - ./data/nodered:/data
       - /etc/localtime:/etc/localtime
