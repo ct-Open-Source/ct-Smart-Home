@@ -17,7 +17,7 @@ jobs:
         run: sed -i -e "s/'latest-minimal'/'latest-{{$ matrix.node_version }}-minimal/" ./docker-image/Dockerfile
       - name: Set up Docker Buildx
         id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1.0.2
+        uses: crazy-max/ghaction-docker-buildx@v3.3.1
         with:
           version: latest
       - name: Available platforms
