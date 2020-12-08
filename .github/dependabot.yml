@@ -9,3 +9,7 @@ updates:
     directory: "/docker-image"
     schedule:
       interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/docker-image"
+    schedule:
+      interval: "daily"
