@@ -58,6 +58,7 @@ USER root
 ARG BUILD_DATE
 ARG BUILD_VERSION
 ARG BUILD_REF
+ARG ARCH
 ARG NODE_RED_VERSION=latest
 ARG TAG_SUFFIX=default
 
@@ -71,9 +72,9 @@ LABEL org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-ref=${BUILD_REF} \
     org.label-schema.vcs-type="Git" \
     org.label-schema.vcs-url="https://github.com/ct-Open-Source/ct-Smart-Home" \
-    org.label-schema.arch=$TARGETPLATFORM \
+    org.label-schema.arch=${ARCH} \
     authors="Dave Conway-Jones, Nick O'Leary, James Thomas, Raymond Mouthaan, Merlin Schumacher, Jan Mahn, Andrijan Möcker, Anton Golubev, J. Völker, GnafGnaf" \
-    org.opencontainers.image.source=https://github.com/merlinschumacher/ct-Smart-Home
+    org.opencontainers.image.source=https://github.com/ct-Open-Source/ct-Smart-Home
 
 COPY --from=build /usr/src/node-red/prod_node_modules ./node_modules
 COPY entrypoint.sh /usr/src/node-red/entrypoint.sh

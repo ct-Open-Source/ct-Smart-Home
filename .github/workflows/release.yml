@@ -8,25 +8,32 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         node_version: [10, 12, 14]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Change Node-Version in Dockerfile to  ${{ matrix.node_version }}
-        run: sed -i -e "s/'latest-minimal'/'latest-{{$ matrix.node_version }}-minimal/" ./docker-image/Dockerfile
       - name: Set up Docker Buildx
         id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v3.3.1
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
-          version: latest
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
       - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
-      - name: Docker login
-        run: |
-          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - name: Run Buildx
         run: |
           if [ ${{ matrix.node_version }} -eq "12" ]; then
@@ -38,4 +45,9 @@ jobs:
             -t ctmagazin/ctnodered:${GITHUB_REF:10}-${{ matrix.node_version }} \
             -t ctmagazin/ctnodered:latest-${{ matrix.node_version }} \
             $LATEST \
+            --build-arg NODE_VERSION=${{ matrix.node_version }} \
+            --build-arg NODE_RED_VERSION=latest \
+            --build-arg OS=alpine \
+            --build-arg BUILD_DATE="$(date +"%Y-%m-%dT%H:%M:%SZ")" \
+            --build-arg TAG_SUFFIX=latest-${{ matrix.node_version }} \
             --file ./docker-image/Dockerfile ./docker-image
