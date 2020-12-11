@@ -21,6 +21,24 @@ function detect_zigbee_device {
 	fi
 }
 
+function create_mosquitto_config {
+	cat > data/mqtt/config/mosquitto.conf <<EOF
+
+log_type all
+
+listener 1883
+listener 9001 
+protocol websockets
+
+# Uncomment the following lines and create a passwd file using mosquitto_passwd to enable authentication.
+#allow_anonymous false 
+#password_file /mosquitto/config/passwd
+EOF
+
+touch data/mqtt/config/passwd
+
+}
+
 function create_zigbee2mqtt_config {
 	cat > data/zigbee/configuration.yaml <<EOF
 # Home Assistant integration (MQTT discovery)
@@ -51,7 +69,7 @@ advanced:
 
 EOF
 
-echo '⚠️  Disable permit_join in data/zigbee/configuration.yaml or the Zigbee2MQTT webinterface on port 8080, after you have paired all of your devices!'
+echo '⚠️  Disable permit_join in data/zigbee/configuration.yaml or the Zigbee2MQTT webinterface on port 1881, after you have paired all of your devices!'
 
 }
 
@@ -61,7 +79,9 @@ function build_data_structure {
 	mkdir -p data/zigbee/
 	mkdir -p data/nodered/
 
-	touch data/mqtt/config/mosquitto.conf
+	if [ ! -f data/mqtt/config/mosquitto.conf ]; then
+		create_mosquitto_config
+	fi
 
 	if [ ! -f data/zigbee/configuration.yaml ]; then
 		create_zigbee2mqtt_config
@@ -100,6 +120,7 @@ function start {
 
 	echo '🏃 Starting the containers'
 	docker-compose up -d $container
+	echo '⚠️  After you made yourself familiar with the setup, it'"'"'s strongly suggested to secure the services. Read the "Security" section in the README!'
 }
 
 function stop {
