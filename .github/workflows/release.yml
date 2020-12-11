@@ -3,6 +3,8 @@ name: Build Release
 on:
   release:
     types: [published]
+  schedule:
+    - cron: "0 10 * * 1" # Update the image every Monday morning to provide regular updates
 
 jobs:
   build:
@@ -31,7 +33,7 @@ jobs:
               export LATEST="-t ctmagazin/ctnodered:latest"
           fi
           docker buildx build \
-            --platform linux/amd64,linux/arm/v7,linux/arm64,linux/arm/v6,linux/s390x \
+            --platform linux/amd64,linux/arm/v7,linux/arm64,linux/arm/v6 \
             -o type=registry \
             -t ctmagazin/ctnodered:${GITHUB_REF:10}-${{ matrix.node_version }} \
             -t ctmagazin/ctnodered:latest-${{ matrix.node_version }} \

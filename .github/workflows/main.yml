@@ -42,7 +42,7 @@ jobs:
           if [ ${{ matrix.node_version }} -eq "14" ]; then
               export DEVEL="-t merlinschumacher/ctnodered:devel"
           fi
-          export PLATFORMS="linux/amd64,linux/arm/v7,linux/arm64/v8,linux/arm/v6,linux/s390x "
+          export PLATFORMS="linux/amd64,linux/arm/v7,linux/arm64/v8,linux/arm/v6"
           docker buildx build \
             --platform $PLATFORMS \
             -o type=registry \
