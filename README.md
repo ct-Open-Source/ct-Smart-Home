@@ -98,6 +98,8 @@ The Node-RED container is based on [the official one](https://hub.docker.com/r/n
 
 We also use the `:latest` versions of [Eclipse Mosquitto](https://hub.docker.com/_/eclipse-mosquitto) and [Zigbee2mqtt](https://github.com/Koenkk/zigbee2mqtt.io).
 
+The Docker images are hosted on the [Docker Hub](https://hub.docker.com/repository/docker/ctmagazin/ctnodered) and on [GitHubs Package Registry ghcr.io](https://github.com/orgs/ct-Open-Source/packages/container/package/ctnodered). The default is to use GitHubs Package Registry, since the rate limits and retention policies of the Docker Hub are possible causes for future issues.
+
 ## Further information
 
 ### Articles in c't
