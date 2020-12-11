@@ -13,12 +13,12 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker build -t docker.io/merlinschumacher/ctnodered:${{ github.sha }} --file ./docker-image/Dockerfile ./docker-image
+          docker build -t docker.io/ctmagazin/ctnodered:${{ github.sha }} --file ./docker-image/Dockerfile ./docker-image
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/merlinschumacher/ctnodered:${{ github.sha }}' 
+          image-ref: 'docker.io/ctmagazin/ctnodered:${{ github.sha }}' 
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
