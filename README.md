@@ -12,7 +12,6 @@ We also added Node-RED-Nodes for [HomeKit](https://github.com/NRCHKB/node-red-co
 ![-](https://img.shields.io/docker/stars/ctmagazin/ctnodered.svg)
 ![-](https://img.shields.io/github/license/ct-Open-Source/ct-Smart-Home.svg)
 ![-](https://img.shields.io/badge/GitHub-Actions-blueviolet)
-![-](https://github.com/ct-Open-Source/ct-Smart-Home/workflows/release/badge.svg)
 
 ## Requirements
 
