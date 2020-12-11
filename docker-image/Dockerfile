@@ -1,4 +1,4 @@
-ARG NODE_VERSION=12
+ARG NODE_VERSION=14
 ARG OS=alpine
 
 #### Stage BASE ########################################################################################################
@@ -41,13 +41,16 @@ COPY package.json .
 FROM base AS build
 
 # Install Build tools
-RUN apk add --no-cache --virtual buildtools build-base linux-headers udev avahi-dev && \
-    npm install --unsafe-perm --no-update-notifier --only=production && \
+RUN apk add --no-cache --virtual buildtools build-base linux-headers udev eudev-dev avahi-dev && \
+    npx npm-check-updates -u && \
+    npm install --unsafe-perm --no-update-notifier --only=production --no-optional && \
     /tmp/remove_native_gpio.sh && \
-    cp -R node_modules prod_node_modules && \
-    apk del buildtools && \
     npm dedupe && \
-    npm cache clean --force
+    npm cache clean --force && \
+    npm prune --production && \
+    apk del buildtools && \
+    cp -R node_modules prod_node_modules
+
 
 #### Stage RELEASE #####################################################################################################
 FROM base AS RELEASE
@@ -59,7 +62,7 @@ ARG NODE_RED_VERSION=latest
 ARG TAG_SUFFIX=default
 
 LABEL org.label-schema.build-date=${BUILD_DATE} \
-    org.label-schema.docker.dockerfile=".docker/Dockerfile.alpine" \
+    org.label-schema.docker.dockerfile="Dockerfile" \
     org.label-schema.license="Apache-2.0" \
     org.label-schema.name="Node-RED for c't-Smart-Home" \
     org.label-schema.version=${BUILD_VERSION} \
@@ -69,14 +72,14 @@ LABEL org.label-schema.build-date=${BUILD_DATE} \
     org.label-schema.vcs-type="Git" \
     org.label-schema.vcs-url="https://github.com/ct-Open-Source/ct-Smart-Home" \
     org.label-schema.arch=$TARGETPLATFORM \
-    authors="Dave Conway-Jones, Nick O'Leary, James Thomas, Raymond Mouthaan, Merlin Schumacher, Jan Mahn"
+    authors="Dave Conway-Jones, Nick O'Leary, James Thomas, Raymond Mouthaan, Merlin Schumacher, Jan Mahn, Andrijan Möcker, Anton Golubev, J. Völker, GnafGnaf" \
+    org.opencontainers.image.source=https://github.com/merlinschumacher/ct-Smart-Home
 
 COPY --from=build /usr/src/node-red/prod_node_modules ./node_modules
 COPY entrypoint.sh /usr/src/node-red/entrypoint.sh
 
 # Chown, install devtools & Clean up
-RUN chown -R node-red:root /usr/src/node-red && \
-    rm -r /tmp/* && \
+RUN rm -r /tmp/* && \
     setcap 'cap_net_raw+eip' `which l2ping` && \
     setcap 'cap_net_raw+eip' `which node`
 
