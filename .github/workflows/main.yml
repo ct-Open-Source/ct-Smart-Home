@@ -45,7 +45,7 @@ jobs:
       - name: Run Buildx
         run: |
           if [ ${{ matrix.node_version }} -eq "14" ]; then
-              export DEVEL="-t ctmagazin/ctnodered:devel \n -t ghcr.io/ct-open-source/ctnodered:devel"
+              export DEVEL="-t ctmagazin/ctnodered:devel -t ghcr.io/ct-open-source/ctnodered:devel"
           fi
           export PLATFORMS="linux/amd64,linux/arm/v7,linux/arm64/v8,linux/arm/v6"
           docker buildx build \
