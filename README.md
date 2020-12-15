@@ -24,17 +24,35 @@ If you want to control Zigbee devices you also will need a Zigbee controller sti
 ## Getting started
 
 * Install docker and docker-compose: [german article on installation process](https://www.heise.de/ct/artikel/Docker-einrichten-unter-Linux-Windows-macOS-4309355.html?hg=1&hgi=3&hgf=false)
-* Clone/Download this repository
+
+* Clone this repository  
+*Note: It's also possible to download the latest release from the release tab, but it's not recommended, because then the update mechanism won't work.*
+
 * `cd` into the folder containing this repos files
+
 * Run `./start.sh start` to setup the data folder needed to run the containers and start them up.  
 *Note: The Zigbee2mqtt container will only start if a [Zigbee-Controller](https://www.zigbee2mqtt.io/information/supported_adapters.html) is connected. Make sure to update the adapter to the newest firmware!*  
-**Backup the `data` folder regularly, as it contains all your data and configuration files**
+**Backup the `./data` folder regularly, as it contains all your data and configuration files**
+
+* When you've got "the hang of it" follow the steps listed in the *Security* section to get a properly secured setup.
 
 ### Updating
+
+You should make a backup of all files in the `./data` folder. If you made changes to files outside of `./data` it is imperative to backup those too.
 
 An update via `start.sh update` will pull the latest release of this repository. This will work for most use cases.
 
 If you made changes to files provided in the repository, you'll have to undo those changes and reapply them. If you're familiar with `git` use `git stash` and `git stash apply`. If you want a specially customized version of this repo, think about forking it.
+
+If you manually downloaded the files from the release tab, you'll have to do the update manually. This takes three steps:
+
+* Backup your installation
+
+* Run `docker-compose down --remove-orphans`
+
+* Download the new release and overwrite the files in your installation. Or even better: switch to a cloned repository.
+
+* Run `./start.sh start` to start c't-Smart-Home
 
 ### Configuration
 
@@ -46,7 +64,9 @@ After starting the containers you'll reach Node-RED [http://docker-host:1880](ht
 
 ## Security
 
-None of the services are protected by authorization mechanisms by default. This is not optimal, but a compromise to make it easier for beginners. To secure Node-RRD have a look at their [documentation about "Securing Node-RED"](https://nodered.org/docs/user-guide/runtime/securing-node-red). It will show you how to enable a mandatory login.
+**Never** make c't-Smart-Home available from outside of your network without following these following steps. In any case you should limit the access by enabling password protection!
+
+None of the services are protected by authorization mechanisms by default. This is not optimal, but a compromise to make it easier for beginners. To secure Node-RED have a look at their [documentation about "Securing Node-RED"](https://nodered.org/docs/user-guide/runtime/securing-node-red). It will show you how to enable a mandatory login.
 
 Zigbee2Mqtts web frontend also provides an authentication mechanism. It's described in their [documentation of the frontend](https://www.zigbee2mqtt.io/information/frontend.htm).
 
@@ -55,6 +75,8 @@ Mosquitto won't demand a authentication either, but you can enable it in the con
 `docker run -it -v ${PWD}/data/mqtt/config/passwd:/passwd eclipse-mosquitto mosquitto_passwd /passwd USERNAME`
 
 Now restart mosquitto with `docker-compose restart mqtt`. Your mosquitto server should require authentication via the username/password combination you provided. Don't forget to modify the Zigbee2MQTT configuration and the Node-RED setup. To add more mosquitto users just run the command again.
+
+Additionally you should run c't-Smart-Home behind a reverse proxy like [Traefik](https://traefik.io/) to ensure all connections are encrypted. Traefik is able to secure not only HTTP, but also generic TCP and UDP connections.
 
 ## `start.sh` options
 
@@ -75,6 +97,30 @@ Check https://github.com/ct-Open-Source/ct-Smart-Home/ for updates.
 * run `./start.sh data` to create the necessary folders
 * Use `docker-compose up -d` to start the containers
 * If you do not want to start Zigbee2mqtt, add the name of the Node-RED container to the docker-compose command: `docker-compose up -d nodered`. The MQTT container will always be started, because it's a dependency of Node-RED.
+
+## Troubleshooting
+
+### I've made an update to the system, but now I get errors about "orphaned containers". How do I fix this?
+
+This happens when there are containers running that haven't been defined in the `docker-compose.yml`. The cause for this might be a failed deployment or that a container was added to or removed from the c't-Smart-Home setup. You can fix this by running `docker-compose down --remove-orphans`, followed by `./start.sh start`.
+
+### After the latest update mosquitto won't accept connections. What is happening?
+
+With version 2.x Mosquitto explicitly requires a option to enable anonymous logins. While it is highly recommended to require authentication for Mosquitto, it's okay for a beginner setup and for testing to have no authentication. To reactivate anonymous logins open the file `./data/mqtt/conf/mosquitto.conf` and add the line `allow_anonymous true`. Then run `docker-compose restart mqtt`.
+
+### Why doesn't c't-Smart-Home provide a complete setup with HTTPS support for the services. What's the issue?
+
+There is no technical issue. Using a reverse proxy like [Traefik](https://traefik.io/) works just fine. But this will add an additional level of complexity to the system, and might encourage inexperienced users to put the setup on the open internet for convenience. This is *absolutely not recommended*.
+
+An experienced user is able to setup Traefik in a short amount of time and will be able to secure the services in a proper way.
+
+### I'm trying to use the setup on my NAS, but I can't run the containers
+
+Sadly most NAS vendors use modified versions of Docker that miss some features. You'll possibly have to run the containers manually oder change some options in the `docker-compose.yml`. We sadly can't provide support for NAS setups due to the varying featureset of their Docker support.
+
+### Can I run c't-Smart-Home on a Mac?
+
+You could try, but we don't support it on a Mac.
 
 ## Containers and Versions
 

@@ -31,8 +31,9 @@ listener 9001
 protocol websockets
 
 # Uncomment the following lines and create a passwd file using mosquitto_passwd to enable authentication.
-#allow_anonymous false 
 #password_file /mosquitto/config/passwd
+# Set this to false, to enable authentication
+allow_anonymous true
 EOF
 
 touch data/mqtt/config/passwd
@@ -91,7 +92,6 @@ function build_data_structure {
 	sudo chown -R 1883:1883 data/mqtt/*
 	sudo chown 1000:1000 data/nodered
 	sudo chown -Rf 1000:1000 data/nodered/*
-	sudo chown 0:0 data/mqtt
 }
 
 function check_dependencies {
@@ -129,8 +129,24 @@ function stop {
 }
 
 function update {
+
+	if [[ ! -d ".git" ]]
+	then
+		echo "🛑You have manually downloaded the release version of c't-Smart-Home.
+The automatic update only works with a cloned Git repository.
+Try backing up your settings shutting down all containers with 
+
+docker-compose down --remove orphans
+
+Then copy the current version from GitHub to this folder and run
+
+./start.sh start.
+
+Alternatively create a Git clone of the repository."
+exit 1
+	fi
 	echo '☠️  Shutting down all running containers and removing them.'
-	docker-compose down
+	docker-compose down --remove-orphans
 	if [ ! $? -eq 0 ]; then
 		echo '⚠️  Updating failed. Please check the repository on GitHub.'
 	fi	    
