@@ -143,7 +143,7 @@ Then copy the current version from GitHub to this folder and run
 ./start.sh start.
 
 Alternatively create a Git clone of the repository."
-
+exit 1
 	fi
 	echo '☠️  Shutting down all running containers and removing them.'
 	docker-compose down --remove-orphans
