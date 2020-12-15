@@ -122,9 +122,11 @@ Sadly most NAS vendors use modified versions of Docker that miss some features. 
 
 You could try, but we don't support it on a Mac.
 
-## Containers and Versions
+## Container images and Versions
 
-The Node-RED container is based on [the official one](https://hub.docker.com/r/nodered/node-red) provided by the Node-RED project. We provide variations based on Node.js versions 8 (legacy), 10 (LTS) and 12. See Node.js [releases page](https://nodejs.org/en/about/releases/) for support cycles. The container based on LTS will always be the default. You can always modify your copy of the compose file to use a different container version.
+The Node-RED container image is a variation on [the official one](https://hub.docker.com/r/nodered/node-red) provided by the Node-RED project. We provide versions based on Node.js versions 10 (Maintenance LTS), 12 (Maintenance LTS) and 14 (Active LTS). See Node.js [releases page](https://nodejs.org/en/about/releases/) for support cycles. The container image based on Active LTS will always be the default. You can freely modify your copy of the compose file to use a different container image or even create your own image.
+
+The `:latest` image is rebuild upon new releases and updated weekly to include updates to Node-RED and the underlying libraries. The `:devel` images are being rebuilt every night.
 
 | Container-Tag | Node-RED version | Node.js version | Notes | Arch |
 | - | - | - | - | - |

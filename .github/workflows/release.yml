@@ -1,6 +1,7 @@
 name: Build Release
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
   schedule:
@@ -14,7 +15,11 @@ jobs:
         node_version: [10, 12, 14]
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Checkout latest release
+        run: git checkout $(git describe --tags `git rev-list --tags --max-count=1`) -b latest-release
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
