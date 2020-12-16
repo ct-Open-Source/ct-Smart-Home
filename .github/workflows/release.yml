@@ -53,9 +53,9 @@ jobs:
           docker buildx build \
             --platform linux/amd64,linux/arm/v7,linux/arm64,linux/arm/v6 \
             -o type=registry \
-            -t ctmagazin/ctnodered:${GITHUB_REF:10}-${{ matrix.node_version }} \
+            -t ctmagazin/ctnodered:$(git describe --tags `git rev-list --tags --max-count=1`)-${{ matrix.node_version }} \
             -t ctmagazin/ctnodered:latest-${{ matrix.node_version }} \
-            -t ghcr.io/ct-open-source/ctnodered:${GITHUB_REF:10}-${{ matrix.node_version }} \
+            -t ghcr.io/ct-open-source/ctnodered:$(git describe --tags `git rev-list --tags --max-count=1`)-${{ matrix.node_version }} \
             -t ghcr.io/ct-open-source/ctnodered:latest-${{ matrix.node_version }} \
             $LATEST \
             --build-arg NODE_VERSION=${{ matrix.node_version }} \
