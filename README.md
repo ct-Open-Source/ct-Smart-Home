@@ -104,13 +104,17 @@ Check https://github.com/ct-Open-Source/ct-Smart-Home/ for updates.
 
 This happens when there are containers running that haven't been defined in the `docker-compose.yml`. The cause for this might be a failed deployment or that a container was added to or removed from the c't-Smart-Home setup. You can fix this by running `docker-compose down --remove-orphans`, followed by `./start.sh start`.
 
-### After the latest update mosquitto won't accept connections. What is happening?
+### After the latest update Mosquitto won't accept connections. What is happening?
 
-With version 2.x Mosquitto explicitly requires a option to enable anonymous logins. While it is highly recommended to require authentication for Mosquitto, it's okay for a beginner setup and for testing to have no authentication. To reactivate anonymous logins open the file `./data/mqtt/conf/mosquitto.conf` and add the line `allow_anonymous true`. Then run `docker-compose restart mqtt`.
+From version 2.x onward Mosquitto explicitly requires a option to enable anonymous logins. While it is highly recommended to require authentication for Mosquitto, it's okay for a beginner setup and for testing to have no authentication. To reactivate anonymous logins open the file `./data/mqtt/conf/mosquitto.conf` and add the line `allow_anonymous true`. Then run `docker-compose restart mqtt`.
+
+### I can't see any devices in the Zigbee2Mqtt nodes provided by node-red-contrib-zigbee2mqtt. 
+
+If you upgrade from an existing installation, you must add `homeassistant: true` to `./data/zigbee/configuration.yaml`.
 
 ### The Zigbee2Mqtt web-frontend doesn't work for me, but the service is running just fine. Did I miss something?
 
-You probably did an update from an earlier version of c't-Smart-Home to a recent one. You must add a few lines to `./data/zigbee/configuration.yaml`. Have a look at their [documentation of the frontend](https://www.zigbee2mqtt.io/information/frontend.htm).
+You probably did an update from an earlier version of c't-Smart-Home to a recent one. You must add a few lines to `./data/zigbee/configuration.yaml`. Have a look at their [documentation of the frontend](https://www.zigbee2mqtt.io/information/frontend.htm). Make sure to set the option `port` to `1881`.
 
 ### Why doesn't c't-Smart-Home provide a complete setup with HTTPS support for the services. What's the issue?
 
@@ -125,6 +129,10 @@ Sadly most NAS vendors use modified versions of Docker that miss some features. 
 ### Can I run c't-Smart-Home on a Mac?
 
 You could try, but we don't support it on a Mac.
+
+### I'm missing some nodes after an update. What happended?
+
+We probably removed some unnecessary or outdated nodes. Check which are missing and look in the palette for them. Most likely you can reinstall them from there.
 
 ## Container images and Versions
 
@@ -150,7 +158,7 @@ The `:latest` image is rebuild upon new releases and updated weekly to include u
 
 We also use the `:latest` versions of [Eclipse Mosquitto](https://hub.docker.com/_/eclipse-mosquitto) and [Zigbee2mqtt](https://github.com/Koenkk/zigbee2mqtt.io).
 
-The Docker images are hosted on the [Docker Hub](https://hub.docker.com/repository/docker/ctmagazin/ctnodered) and on [GitHubs Package Registry ghcr.io](https://github.com/orgs/ct-Open-Source/packages/container/package/ctnodered). The default is to use GitHubs Package Registry, since the rate limits and retention policies of the Docker Hub are possible causes for future issues.
+The Docker images are hosted on the [Docker Hub](https://hub.docker.com/repository/docker/ctmagazin/ctnodered) and on [GitHubs Container Registry ghcr.io](https://github.com/orgs/ct-Open-Source/packages/container/package/ctnodered). The default is to use GitHubs Container Registry, since the rate limits and retention policies of the Docker Hub are possible causes for future issues.
 
 ## Further information
 
