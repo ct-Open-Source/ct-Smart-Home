@@ -108,6 +108,10 @@ This happens when there are containers running that haven't been defined in the 
 
 With version 2.x Mosquitto explicitly requires a option to enable anonymous logins. While it is highly recommended to require authentication for Mosquitto, it's okay for a beginner setup and for testing to have no authentication. To reactivate anonymous logins open the file `./data/mqtt/conf/mosquitto.conf` and add the line `allow_anonymous true`. Then run `docker-compose restart mqtt`.
 
+### The Zigbee2Mqtt web-frontend doesn't work for me, but the service is running just fine. Did I miss something?
+
+You probably did an update from an earlier version of c't-Smart-Home to a recent one. You must add a few lines to `./data/zigbee/configuration.yaml`. Have a look at their [documentation of the frontend](https://www.zigbee2mqtt.io/information/frontend.htm).
+
 ### Why doesn't c't-Smart-Home provide a complete setup with HTTPS support for the services. What's the issue?
 
 There is no technical issue. Using a reverse proxy like [Traefik](https://traefik.io/) works just fine. But this will add an additional level of complexity to the system, and might encourage inexperienced users to put the setup on the open internet for convenience. This is *absolutely not recommended*.
