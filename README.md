@@ -85,6 +85,7 @@ Additionally you should run c't-Smart-Home behind a reverse proxy like [Traefik]
 —————————————————————————————
 Usage:
 start.sh update – to update this copy of the repo
+start.sh fix – correct the permissions in the data folder 
 start.sh start – run all containers
 start.sh stop – stop all containers
 start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.
@@ -133,6 +134,10 @@ You could try, but we don't support it on a Mac.
 ### I'm missing some nodes after an update. What happended?
 
 We probably removed some unnecessary or outdated nodes. Check which are missing and look in the palette for them. Most likely you can reinstall them from there.
+
+### Node-RED won't start after an update. The logs show permission errors. How do I fix this?
+
+For security reasons the Node-RED service won't run as root anymore. It now runs with the GID and UID 1000. To fix this issue you must set the GID and UID of data/nodered and all of its content to 1000. You can use `start.sh fix` to correct those issues.
 
 ## Container images and Versions
 

@@ -74,6 +74,15 @@ echo '⚠️  Disable permit_join in data/zigbee/configuration.yaml or the Zigbe
 
 }
 
+function fix_permissions {
+	echo '📄 Setting the permissions of the configurations in the data folder.'
+	sudo chown 1883:1883 data/mqtt
+	sudo chown -Rf 1883:1883 data/mqtt/*
+	sudo chown 1000:1000 data/nodered
+	sudo chown -Rf 1000:1000 data/nodered/*
+}
+
+
 function build_data_structure {
 	echo '📄 Configuration folder ./data is missing. Creating it from scratch.'
 	mkdir -p data/mqtt/config
@@ -88,10 +97,7 @@ function build_data_structure {
 		create_zigbee2mqtt_config
 	fi
 
-	sudo chown 1883:1883 data/mqtt
-	sudo chown -R 1883:1883 data/mqtt/*
-	sudo chown 1000:1000 data/nodered
-	sudo chown -Rf 1000:1000 data/nodered/*
+	fix_permissions
 }
 
 function check_dependencies {
@@ -143,7 +149,7 @@ Then copy the current version from GitHub to this folder and run
 ./start.sh start.
 
 Alternatively create a Git clone of the repository."
-exit 1
+		exit 1
 	fi
 	echo '☠️  Shutting down all running containers and removing them.'
 	docker-compose down --remove-orphans
@@ -163,6 +169,7 @@ exit 1
 		echo '⚠️  Updating failed. Please check the repository on GitHub.'
 	fi	    
 	start
+	fix_permissions
 }
 
 check_dependencies
@@ -177,6 +184,9 @@ case "$1" in
 	"update")
 		update
 		;;
+	"fix")
+		fix_permissions	
+		;;
 	"data")
 		build_data_structure
 		;;
@@ -186,6 +196,7 @@ case "$1" in
 —————————————————————————————
 Usage:
 start.sh update – update to the latest release version
+start.sh fix – correct the permissions in the data folder 
 start.sh start – run all containers
 start.sh stop – stop all containers
 start.sh data – set up the data folder needed for the containers, but run none of them. Useful for personalized setups.
