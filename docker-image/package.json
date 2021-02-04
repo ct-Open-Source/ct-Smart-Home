@@ -53,6 +53,7 @@
         "node-red-contrib-noble-bluetooth": "*",
         "node-red-contrib-tado-client": "*",
         "node-red-contrib-zigbee2mqtt": "*",
-        "node-red-dashboard": "*"
+        "node-red-dashboard": "*",
+	"@abandonware/bluetooth-hci-socket": "*"
     }
 }
