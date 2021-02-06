@@ -1,24 +1,33 @@
 #!/bin/bash
 
 function detect_zigbee_device {
-	if usb_dev=$(lsusb -d 0451:); then
-		usb_dev_count=$(ls -1 /dev/ttyACM* 2>/dev/null | wc -l)
-		if [ "$usb_dev_count" -gt 1 ]; then
-			>&2 echo "There are multiple devices connected, that could be Zigbee USB adaptors. Please check data/zigbee/configuration.yml, if the device is wrong. /dev/ttyACM0 is used as the default."
-
-			echo "/dev/ttyACM0"
+	usb_dev_count=0
+	usb_dev_found="FALSE"
+	for device in /dev/ttyUSB* /dev/ttyACM* 
+	do 
+		if [ ! -c $device ]; then
+			continue
 		fi
-
-		if [ -c /dev/ttyACM0 ]; then
-			echo "/dev/ttyACM0"
-		else
-			>&2 echo "I could not find /dev/ttyACM0. Please check your hardware."
+		
+		VENDOR_PRODUCT=$(udevadm info --name=$device | egrep -i "ID_VENDOR_ID|ID_MODEL_ID" | cut -d'=' -f2 | tr '\n' ':') 
+		# Texas Instruments USB device - Vendor: 0451
+		# slaesh’s CC2652RB stick - Vendor: 10c4
+		if [ "$(echo ${VENDOR_PRODUCT} | egrep '^0451:|^10c4:')" != "" ]
+		then	
+			((usb_dev_count=usb_dev_count+1))
+			usb_dev_found="$device"
+		 	>&2 echo "📄 Found Device #$usb_dev_count $device (vendor:product=${VENDOR_PRODUCT}) that could be Zigbee USB adaptor"  
 		fi
-	else
-		>&2 echo No Texas Instruments USB device found.
+	done
 
-		echo "False"
+	if [ "$usb_dev_count" -gt 1 ]; then
+		>&2 echo "⚠️  There are multiple devices connected, that could be Zigbee USB adaptors. Please check data/zigbee/configuration.yml, if the device is wrong. $usb_dev_found is used as the default."
 	fi
+
+	if [ "$usb_dev_count" -eq 0 ]; then
+		>&2 echo "⚠️  No Texas Instruments USB device nor slaesh’s CC2652RB stick found for zigbee2mqtt"
+	fi
+	echo "$usb_dev_found"
 }
 
 function create_mosquitto_config {
@@ -41,12 +50,18 @@ touch data/mqtt/config/passwd
 }
 
 function create_zigbee2mqtt_config {
+	# zigbee2mqtt device
+	device="$1"
+	
 	cat > data/zigbee/configuration.yaml <<EOF
 # Home Assistant integration (MQTT discovery)
 homeassistant: true 
 
 # allow new devices to join
 permit_join: true
+
+serial:
+  port: $device
 
 # enable frontend
 frontend:
@@ -74,6 +89,48 @@ echo '⚠️  Disable permit_join in data/zigbee/configuration.yaml or the Zigbe
 
 }
 
+function create_compose_env {
+	# zigbee2mqtt device
+	device="$1"
+	
+	cat > .env <<EOF
+# Container-Tag listed in README.md (e.g.: latest-14, devel, devel-14, ...)
+# Default = latest
+CONTAINER_TAG=latest
+
+#
+# MQTT Ports for mosquitto
+# Default:
+#  - 1883 insecure
+#  - 9001 websocket
+#  - 8883 secure (must be configured)
+MQTT_PORT=1883
+MQTT_WEBSOCKET_PORT=9001
+MQTT_SECURE_PORT=8883
+
+# Port for access to zigbee2mqtt Frontend
+ZIGBEE_FRONTEND_PORT=1881
+
+EOF
+	if [ "$device" != "FALSE" ] ; then
+		cat >> .env <<EOF
+# Devices routed into zigbee2mqtt container ; within container as /dev/ttyACM0 + /dev/ttyACM1
+ZIGBEE_DEVICE=$device
+EOF
+	else
+		cat >> .env <<EOF
+# Devices routed into zigbee2mqtt container ; within container as /dev/ttyACM0 + /dev/ttyACM1
+# ZIGBEE_DEVICE=$device
+# Uncomment line ZIGBEE_DEVICE and replace $device with device path like /dev/ttyXXX
+# also edit data/zigbee/configuration.yaml to set the same device!
+EOF
+
+	fi
+	echo '⚠️  Check .env for correct versions, ports and zigbee2mqtt-device'
+}
+
+
+
 function fix_permissions {
 	echo '📄 Setting the permissions of the configurations in the data folder.'
 	sudo chown 1883:1883 data/mqtt
@@ -84,17 +141,26 @@ function fix_permissions {
 
 
 function build_data_structure {
-	echo '📄 Configuration folder ./data is missing. Creating it from scratch.'
 	mkdir -p data/mqtt/config
 	mkdir -p data/zigbee/
 	mkdir -p data/nodered/
 
+	# zigbee2mqtt device
+	device="$1"
+
 	if [ ! -f data/mqtt/config/mosquitto.conf ]; then
+		echo '📄 Configuration file data/mqtt/config/mosquitto.conf is missing. Creating it from scratch.'
 		create_mosquitto_config
 	fi
 
-	if [ ! -f data/zigbee/configuration.yaml ]; then
-		create_zigbee2mqtt_config
+	if [[ ! -f data/zigbee/configuration.yaml && "$device" != "FALSE" ]]; then
+		echo '📄 Configuration file data/zigbee/configuration.yaml is missing. Creating it from scratch.'
+		create_zigbee2mqtt_config "$device"
+	fi
+	
+	if [ ! -f .env ]; then
+		echo '📄 Configuration file .env is missing. Creating it from scratch.'
+		create_compose_env "$device"
 	fi
 
 	fix_permissions
@@ -110,6 +176,13 @@ function check_dependencies {
 		echo '⚠️  Error: git is not installed.' >&2
 		exit 1
 	fi
+
+        if ! [ -x "$(command -v udevadm)" ]; then
+                echo '⚠️  Error: udevadm is not installed.' >&2
+                exit 1
+        fi
+
+
 }
 
 function start {
@@ -120,10 +193,9 @@ function start {
 		container="nodered mqtt"
 	fi
 
-	if [ ! -d data ]; then
-		build_data_structure    
-	fi
-
+	# Build data structure with default file if not existing
+	build_data_structure "$device"
+	
 	echo '🏃 Starting the containers'
 	docker-compose up -d $container
 	echo '⚠️  After you made yourself familiar with the setup, it'"'"'s strongly suggested to secure the services. Read the "Security" section in the README!'
@@ -188,7 +260,8 @@ case "$1" in
 		fix_permissions	
 		;;
 	"data")
-		build_data_structure
+		device=$(detect_zigbee_device)
+		build_data_structure "$device"
 		;;
 	* )
 		cat << EOF
