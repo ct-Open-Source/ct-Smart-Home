@@ -114,12 +114,12 @@ ZIGBEE_FRONTEND_PORT=1881
 EOF
 	if [ "$device" != "FALSE" ] ; then
 		cat >> .env <<EOF
-# Devices routed into zigbee2mqtt container ; within container as /dev/ttyACM0 + /dev/ttyACM1
+# Device mounted into zigbee2mqtt container
 ZIGBEE_DEVICE=$device
 EOF
 	else
 		cat >> .env <<EOF
-# Devices routed into zigbee2mqtt container ; within container as /dev/ttyACM0 + /dev/ttyACM1
+# Device mounted into zigbee2mqtt container
 # ZIGBEE_DEVICE=$device
 # Uncomment line ZIGBEE_DEVICE and replace $device with device path like /dev/ttyXXX
 # also edit data/zigbee/configuration.yaml to set the same device!
