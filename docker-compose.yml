@@ -2,7 +2,7 @@ version: '3.6'
 
 services:
   nodered:
-    image: ghcr.io/ct-open-source/ctnodered:latest
+    image: ghcr.io/ct-open-source/ctnodered:${CONTAINER_TAG:-latest}
     volumes:
       - ./data/nodered:/data
       - /etc/localtime:/etc/localtime
@@ -16,8 +16,9 @@ services:
   mqtt:
     image: "eclipse-mosquitto"
     ports:
-      - "1883:1883"
-      - "9001:9001"
+      - "${MQTT_PORT:-1883}:1883"
+      - "${MQTT_WEBSOCKET_PORT:-9001}:9001"
+      - "${MQTT_SECURE_PORT:-8883}:8883"
     volumes:
       - ./data/mqtt:/mosquitto
       - /etc/localtime:/etc/localtime
@@ -32,11 +33,10 @@ services:
       - /run/udev:/run/udev:ro
       - /etc/localtime:/etc/localtime
     devices:
-      - "/dev/ttyACM0:/dev/ttyACM0"
-      - "/dev/ttyACM1:/dev/ttyACM1"
+      - "${ZIGBEE_DEVICE:-/dev/ttyACM0}:${ZIGBEE_DEVICE:-/dev/ttyACM0}"
     restart: always
     privileged: true
     ports:
-      - 1881:1881
+      - "${ZIGBEE_FRONTEND_PORT:-1881}:1881"
     environment:
       - TZ=Europe/Berlin
