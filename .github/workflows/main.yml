@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.PACKAGES_TOKEN }}
           registry: ghcr.io
       - name: Cache Docker layers
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         id: cache
         with:
           path: /tmp/.buildx-cache
