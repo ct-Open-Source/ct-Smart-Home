@@ -60,7 +60,7 @@ To change configuration of the provided services, either use the corresponding w
 
 ### How to access the services
 
-After starting the containers you'll reach Node-RED [http://docker-host:1880](http://docker-host:1880) and the Zigbee administrative interface at [http://docker-host:1881](http://docker-host:1881). Mosquitto is available on Port 1883 (and 9001 for websockets). You can see more details of the processes output in the container logs with the command `docker-compose logs`.
+After starting the containers you'll reach Node-RED at [http://docker-host:1880](http://docker-host:1880) and the Zigbee administrative interface at [http://docker-host:1881](http://docker-host:1881). Mosquitto is available on Port 1883 (and 9001 for websockets). You can see more details of the processes output in the container logs with the command `docker-compose logs`.
 
 ## Security
 
@@ -68,7 +68,7 @@ After starting the containers you'll reach Node-RED [http://docker-host:1880](ht
 
 None of the services are protected by authorization mechanisms by default. This is not optimal, but a compromise to make it easier for beginners. To secure Node-RED have a look at their [documentation about "Securing Node-RED"](https://nodered.org/docs/user-guide/runtime/securing-node-red). It will show you how to enable a mandatory login.
 
-Zigbee2Mqtts web frontend also provides an authentication mechanism. It's described in their [documentation of the frontend](https://www.zigbee2mqtt.io/information/frontend.htm).
+Zigbee2Mqtt's web frontend also provides an authentication mechanism. It's described in their [documentation of the frontend](https://www.zigbee2mqtt.io/information/frontend.htm).
 
 Mosquitto won't demand a authentication either, but you can enable it in the config file. Just enable the last two lines and run the following command. Be sure to replace `USERNAME` with your preferred name.
 
@@ -107,7 +107,7 @@ This happens when there are containers running that haven't been defined in the 
 
 ### After the latest update Mosquitto won't accept connections. What is happening?
 
-From version 2.x onward Mosquitto explicitly requires a option to enable anonymous logins. While it is highly recommended to require authentication for Mosquitto, it's okay for a beginner setup and for testing to have no authentication. To reactivate anonymous logins open the file `./data/mqtt/conf/mosquitto.conf` and add the line `allow_anonymous true`. Then run `docker-compose restart mqtt`.
+From version 2.x onward Mosquitto explicitly requires an option to enable anonymous logins. While it is highly recommended to require authentication for Mosquitto, it's okay for a beginner setup and for testing to have no authentication. To reactivate anonymous logins open the file `./data/mqtt/conf/mosquitto.conf` and add the line `allow_anonymous true`. Then run `docker-compose restart mqtt`.
 
 ### I can't see any devices in the Zigbee2Mqtt nodes provided by node-red-contrib-zigbee2mqtt. 
 
@@ -131,9 +131,9 @@ Sadly most NAS vendors use modified versions of Docker that miss some features. 
 
 You could try, but we don't support it on a Mac.
 
-### I'm missing some nodes after an update. What happended?
+### I'm missing some nodes after an update. What happened?
 
-We probably removed some unnecessary or outdated nodes. Check which are missing and look in the palette for them. Most likely you can reinstall them from there.
+We probably removed some unnecessary or outdated nodes. Check which ones are missing and look in the palette for them. Most likely you can reinstall them from there.
 
 ### Node-RED won't start after an update. The logs show permission errors. How do I fix this?
 
@@ -143,7 +143,7 @@ For security reasons the Node-RED service won't run as root anymore. It now runs
 
 The Node-RED container image is a variation on [the official one](https://hub.docker.com/r/nodered/node-red) provided by the Node-RED project. We provide versions based on Node.js versions 10 (Maintenance LTS), 12 (Maintenance LTS) and 14 (Active LTS). See Node.js [releases page](https://nodejs.org/en/about/releases/) for support cycles. The container image based on Active LTS will always be the default. You can freely modify your copy of the compose file to use a different container image or even create your own image.
 
-The `:latest` image is rebuild upon new releases and updated weekly to include updates to Node-RED and the underlying libraries. The `:devel` images are being rebuilt every night.
+The `:latest` image is rebuilt upon new releases and updated weekly to include updates to Node-RED and the underlying libraries. The `:devel` images are being rebuilt every night.
 
 | Container-Tag | Node-RED version | Node.js version | Notes | Arch |
 | - | - | - | - | - |
@@ -163,7 +163,7 @@ The `:latest` image is rebuild upon new releases and updated weekly to include u
 
 We also use the `:latest` versions of [Eclipse Mosquitto](https://hub.docker.com/_/eclipse-mosquitto) and [Zigbee2mqtt](https://github.com/Koenkk/zigbee2mqtt.io).
 
-The Docker images are hosted on the [Docker Hub](https://hub.docker.com/repository/docker/ctmagazin/ctnodered) and on [GitHubs Container Registry ghcr.io](https://github.com/orgs/ct-Open-Source/packages/container/package/ctnodered). The default is to use GitHubs Container Registry, since the rate limits and retention policies of the Docker Hub are possible causes for future issues.
+The Docker images are hosted on the [Docker Hub](https://hub.docker.com/repository/docker/ctmagazin/ctnodered) and on [GitHub's Container Registry ghcr.io](https://github.com/orgs/ct-Open-Source/packages/container/package/ctnodered). The default is to use GitHub's Container Registry, since the rate limits and retention policies of the Docker Hub are possible causes for future issues.
 
 ## Further information
 
@@ -178,6 +178,6 @@ Zigbee2mqtt is described here: [https://ct.de/ygdp](https://ct.de/ygdp)
 [Node-RED documentation](https://nodered.org/docs/)
 
 [Zigbee2MQTT documentation](https://www.zigbee2mqtt.io/)  
-(Note: If you use and enjoy the Zigbee service, consider [sponsoring Koen Kanters](https://www.paypal.com/paypalme/koenkk) great work!)
+(Note: If you use and enjoy the Zigbee service, consider [sponsoring Koen Kanter's](https://www.paypal.com/paypalme/koenkk) great work!)
 
 [Mosquitto documentation](https://mosquitto.org/man/mosquitto-8.html)
