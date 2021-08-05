@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function detect_zigbee_device {
-	if usb_dev=$(lsusb -d 0451:); then
+	if [[ $(lsusb -d 0451:) || $(lsusb -d 1cf1:) ]]; then
 		usb_dev_count=$(ls -1 /dev/ttyACM* 2>/dev/null | wc -l)
 		if [ "$usb_dev_count" -gt 1 ]; then
 			>&2 echo "There are multiple devices connected, that could be Zigbee USB adaptors. Please check data/zigbee/configuration.yml, if the device is wrong. /dev/ttyACM0 is used as the default."
@@ -13,7 +13,7 @@ function detect_zigbee_device {
 			>&2 echo "I could not find /dev/ttyACM0. Please check your hardware."
 		fi
 	else
-		>&2 echo No Texas Instruments USB device found.
+		>&2 echo No Texas Instruments or Dresden Elektronik USB device found.
 
 		echo "False"
 	fi
