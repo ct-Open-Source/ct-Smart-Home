@@ -5,8 +5,6 @@ function detect_zigbee_device {
 		usb_dev_count=$(ls -1 /dev/ttyACM* 2>/dev/null | wc -l)
 		if [ "$usb_dev_count" -gt 1 ]; then
 			>&2 echo "There are multiple devices connected, that could be Zigbee USB adaptors. Please check data/zigbee/configuration.yml, if the device is wrong. /dev/ttyACM0 is used as the default."
-
-			echo "/dev/ttyACM0"
 		fi
 
 		if [ -c /dev/ttyACM0 ]; then
