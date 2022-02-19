@@ -1,5 +1,6 @@
 #!/bin/sh
 [[ -e /var/run/dbus.pid ]] && su-exec root rm -f /var/run/dbus.pid
+[[ -e /run/dbus/dbus.pid ]] && su-exec root rm -f /run/dbus/dbus.pid
 [[ -e /var/run/avahi-daemon/pid ]] && su-exec root rm -f /var/run/avahi-daemon/pid
 [[ -e /var/run/dbus/system_bus_socket ]] && su-exec root rm -f /var/run/dbus/system_bus_socket
 
